@@ -8,15 +8,33 @@
 </head>
 <body>
     <div class="container1">
-        <div class="form-box" id="login-form">
+        <div class="form-box active" id="login-form">
             <form>
                 <h2>Login</h2>
                 <input type="email" name="email" placeholder="email" required>
                 <input type="password" name="password" placeholder="password" required>
                 <button type="submit" name="login">Login</button>
-                <p>Don't havenan account?<a href="#">Register</a></p>
+                <p>Don't havenan account?<a href="#" onclick="showform('register-form')">Register</a></p>
+            </form>
+        </div>
+         <div class="container1">
+        <div class="form-box" id="register-form">
+            <form>
+                <h2>Register</h2>
+                <input type="text" name="name" placeholder="name" required>
+                <input type="email" name="email" placeholder="email" required>
+                <input type="password" name="password" placeholder="password" required>
+                <select name="role" required>
+                    <option value="">Select Role</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button type="submit" name="register">Register</button>
+                <p>Already have an account?<a href="#" onclick="showform('login-form')">Login</a></p>
             </form>
         </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
