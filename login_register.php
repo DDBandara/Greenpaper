@@ -14,6 +14,7 @@ if (isset($_POST['register'])) {
     $email         = trim($_POST['email'] ?? '');
     $plainPassword = $_POST['password'] ?? '';
     $role          = 'user';   // Never take the role from the form. Make admins in phpMyAdmin.
+    $selected      = $_POST['categories'] ?? [];   // the ticked category ids
 
     if ($name === '' || $email === '' || $plainPassword === '') {
         $_SESSION['register_error'] = "Please fill in all fields.";
@@ -40,6 +41,25 @@ if (isset($_POST['register'])) {
             $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $name, $email, $password, $role);
             $stmt->execute();
+            $newUserId = $stmt->insert_id;   // the id MySQL just gave this new user
+
+            // Save the chosen categories (only ids that really exist in the categories table)
+            if (is_array($selected) && count($selected) > 0) {
+                $validIds = [];
+                $res = $conn->query("SELECT id FROM categories");
+                while ($r = $res->fetch_assoc()) {
+                    $validIds[] = (int)$r['id'];
+                }
+
+                $subStmt = $conn->prepare("INSERT IGNORE INTO subscriptions (user_id, category_id) VALUES (?, ?)");
+                foreach (array_unique($selected) as $catId) {
+                    $catId = (int)$catId;
+                    if (in_array($catId, $validIds, true)) {
+                        $subStmt->bind_param("ii", $newUserId, $catId);
+                        $subStmt->execute();
+                    }
+                }
+            }
 
             $_SESSION['success']     = "Registered! Please log in.";
             $_SESSION['active_form'] = "login";
