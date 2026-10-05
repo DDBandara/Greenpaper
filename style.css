@@ -107,3 +107,13 @@ span{
     width: 300px;
     margin: 0 auto;
 }
+
+.success-message{
+    padding: 12px;
+    background: #d4edda;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #1e6b34;
+    text-align: center;
+    margin-bottom: 20px;
+}
