@@ -1,100 +1,100 @@
 <?php
-session_start();
-require_once 'config.php';
+$pageTitle = 'NSBM NewsDesk - Home';
+require_once __DIR__ . '/includes/header.php';
 
-// Already logged in? Send them to their page instead of showing the form.
-if (isset($_SESSION['user_id'])) {
-    if (($_SESSION['role'] ?? '') === 'admin') {
-        header("Location: admin_page.php");
-    } else {
-        header("Location: user_page.php");
-    }
-    exit();
-}
+// ================= FAKE DATA (replace later with database queries) =================
+// Each article needs these fields: id, title, category, summary, date.
+// When the database is ready, replace each array below with a query that returns the same fields.
+$breaking = "Final exam timetable released. Check your faculty notice board.";
 
-$errors = [
-    'login'    => $_SESSION['login_error'] ?? '',
-    'register' => $_SESSION['register_error'] ?? ''
+$featured = [
+    'id' => 1,
+    'title' => 'NSBM students win the national robotics challenge',
+    'category' => 'Events',
+    'summary' => 'A team from the Faculty of Computing took first place after a two-day final, beating 24 universities.',
+    'date' => '2026-10-02',
 ];
-$success    = $_SESSION['success'] ?? '';
-$activeForm = $_SESSION['active_form'] ?? 'login';
 
-// Remove only the one-time messages (do NOT wipe the whole session)
-unset($_SESSION['login_error'], $_SESSION['register_error'], $_SESSION['success'], $_SESSION['active_form']);
+$articles = [
+    ['id' => 2, 'title' => 'Semester 2 exam timetable published', 'category' => 'Academic', 'summary' => 'Exams begin on 3 November. Download the timetable from the student portal.', 'date' => '2026-10-04'],
+    ['id' => 3, 'title' => 'Inter-faculty cricket final this Friday', 'category' => 'Sports', 'summary' => 'Business and Computing meet in the final at the main ground at 3 pm.', 'date' => '2026-10-03'],
+    ['id' => 4, 'title' => 'Career fair returns with 40 employers', 'category' => 'Events', 'summary' => 'Bring your CV. Registration is open at the student services desk.', 'date' => '2026-10-01'],
+    ['id' => 5, 'title' => 'Library opens late during exam weeks', 'category' => 'General', 'summary' => 'The library will stay open until midnight from 28 October.', 'date' => '2026-09-30'],
+    ['id' => 6, 'title' => 'New scholarship applications now open', 'category' => 'Academic', 'summary' => 'Merit scholarships are available for second-year students. Apply by 20 October.', 'date' => '2026-09-28'],
+    ['id' => 7, 'title' => 'Football trials for the university team', 'category' => 'Sports', 'summary' => 'Open trials on Saturday morning. All faculties are welcome.', 'date' => '2026-09-27'],
+];
 
-// Get the categories for the register form
-$categories = [];
-$result = $conn->query("SELECT id, name FROM categories ORDER BY name");
-while ($row = $result->fetch_assoc()) {
-    $categories[] = $row;
-}
+$announcements = [
+    ['title' => 'Student portal maintenance', 'date' => '2026-10-06'],
+    ['title' => 'Graduation rehearsal on 14 October', 'date' => '2026-10-05'],
+    ['title' => 'Parking changes near Block B', 'date' => '2026-10-03'],
+];
 
-function showError($error) {
-    return $error ? "<p class='error-message'>" . htmlspecialchars($error) . "</p>" : "";
-}
+$categories = ['Academic', 'Events', 'Sports', 'General'];
+// ================= END OF FAKE DATA =================
 
-function showSuccess($message) {
-    return $message ? "<p class='success-message'>" . htmlspecialchars($message) . "</p>" : "";
-}
-
-function isActiveForm($formName, $activeForm) {
-    return $activeForm === $formName ? "active" : "";
+// Turns "Sports" into "cat-sports" so each category gets its own colour in news.css
+function catClass($name) {
+    return 'cat-' . strtolower($name);
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Signup</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* The global "input" style in style.css would stretch checkboxes, so reset them here */
-        .field-label { text-align: left; font-weight: 500; margin-bottom: 8px; }
-        .category-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-        .category-options label { display: flex; align-items: center; gap: 6px; background: #eef2fb; padding: 8px 14px; border-radius: 20px; font-size: 15px; cursor: pointer; }
-        .category-options input[type="checkbox"] { width: auto; margin: 0; padding: 0; }
-    </style>
-</head>
-<body>
-    <div class="container1">
-        <div class="form-box <?= isActiveForm('login', $activeForm) ?>" id="login-form">
-            <form action="login_register.php" method="post">
-                <h2>Login</h2>
-                <?= showSuccess($success) ?>
-                <?= showError($errors['login']) ?>
-                <input type="email" name="email" placeholder="email" required>
-                <input type="password" name="password" placeholder="password" required>
-                <button type="submit" name="login">Login</button>
-                <p>Don't have an account? <a href="#" onclick="showform('register-form'); return false;">Register</a></p>
-            </form>
-        </div>
-
-        <div class="form-box <?= isActiveForm('register', $activeForm) ?>" id="register-form">
-            <form action="login_register.php" method="post">
-                <h2>Register</h2>
-                <?= showError($errors['register']) ?>
-                <input type="text" name="name" placeholder="name" required>
-                <input type="email" name="email" placeholder="email" required>
-                <input type="password" name="password" placeholder="password (at least 8 characters)" required>
-
-                <p class="field-label">Choose the categories you want to follow:</p>
-                <div class="category-options">
-                    <?php foreach ($categories as $category): ?>
-                        <label>
-                            <input type="checkbox" name="categories[]" value="<?= (int)$category['id'] ?>">
-                            <?= htmlspecialchars($category['name']) ?>
-                        </label>
-                    <?php endforeach; ?>
-                </div>
-
-                <button type="submit" name="register">Register</button>
-                <p>Already have an account? <a href="#" onclick="showform('login-form'); return false;">Login</a></p>
-            </form>
-        </div>
+<?php if ($breaking): ?>
+    <div class="breaking">
+        <strong>Breaking</strong>
+        <span><?= e($breaking) ?></span>
     </div>
+<?php endif; ?>
 
-    <script src="script.js"></script>
-</body>
-</html>
+<section class="featured <?= catClass($featured['category']) ?>">
+    <div class="featured-body">
+        <span class="tag"><?= e($featured['category']) ?></span>
+        <h1><a href="article.php?id=<?= (int)$featured['id'] ?>"><?= e($featured['title']) ?></a></h1>
+        <p><?= e($featured['summary']) ?></p>
+        <span class="meta"><?= date('d M Y', strtotime($featured['date'])) ?></span>
+    </div>
+</section>
+
+<div class="layout">
+    <section class="main-col">
+        <h2 class="section-title">Latest news</h2>
+        <div class="card-grid">
+            <?php foreach ($articles as $article): ?>
+                <article class="card">
+                    <div class="card-thumb <?= catClass($article['category']) ?>"></div>
+                    <div class="card-body">
+                        <span class="tag <?= catClass($article['category']) ?>"><?= e($article['category']) ?></span>
+                        <h3><a href="article.php?id=<?= (int)$article['id'] ?>"><?= e($article['title']) ?></a></h3>
+                        <p><?= e($article['summary']) ?></p>
+                        <span class="meta"><?= date('d M Y', strtotime($article['date'])) ?></span>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+    <aside class="sidebar">
+        <section class="panel announcements">
+            <h2 class="section-title">Announcements</h2>
+            <ul>
+                <?php foreach ($announcements as $a): ?>
+                    <li>
+                        <strong><?= e($a['title']) ?></strong>
+                        <span class="meta"><?= date('d M Y', strtotime($a['date'])) ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
+
+        <section class="panel category-panel">
+            <h2 class="section-title">Categories</h2>
+            <ul class="category-links">
+                <?php foreach ($categories as $name): ?>
+                    <li><a class="<?= catClass($name) ?>" href="category.php?name=<?= urlencode($name) ?>"><?= e($name) ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
+    </aside>
+</div>
+
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

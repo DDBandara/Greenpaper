@@ -4,7 +4,7 @@ require_once 'config.php';
 
 // Only accept form submissions. Opening this file directly goes back to the form.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: index.php");
+    header("Location: login.php");
     exit();
 }
 
@@ -66,7 +66,7 @@ if (isset($_POST['register'])) {
         }
     }
 
-    header("Location: index.php");
+    header("Location: login.php");
     exit();
 }
 
@@ -94,7 +94,7 @@ if (isset($_POST['login'])) {
             if ($user['role'] === 'admin') {
                 header("Location: admin_page.php");
             } else {
-                header("Location: user_page.php");
+                header("Location: index.php");
             }
             exit();
         }
@@ -103,11 +103,11 @@ if (isset($_POST['login'])) {
     // Wrong email or wrong password: same message for both
     $_SESSION['login_error'] = "Invalid email or password.";
     $_SESSION['active_form'] = "login";
-    header("Location: index.php");
+    header("Location: login.php");
     exit();
 }
 
 // Neither button was pressed
-header("Location: index.php");
+header("Location: login.php");
 exit();
 ?>
