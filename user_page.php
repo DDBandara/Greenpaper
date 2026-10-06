@@ -3,7 +3,7 @@ session_start();
 header("Cache-Control: no-store");   // stops the Back button showing this page after logout
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
 }
 
