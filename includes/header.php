@@ -33,9 +33,9 @@ $isAdmin   = ($_SESSION['role'] ?? '') === 'admin';
 <body>
 <header class="site-header">
     <div class="header-inner">
-        <a class="brand" href="<?= BASE_URL ?>/index.php">NSBM <span>NewsDesk</span></a>
+        <a class="brand" href="<?= BASE_URL ?>/home.php">NSBM <span>NewsDesk</span></a>
         <nav class="main-nav">
-            <a href="<?= BASE_URL ?>/index.php">Home</a>
+            <a href="<?= BASE_URL ?>/home.php">Home</a>
             <?php if ($loggedIn): ?>
                 <a href="<?= BASE_URL ?>/user_page.php">My feed</a>
             <?php endif; ?>
@@ -48,9 +48,9 @@ $isAdmin   = ($_SESSION['role'] ?? '') === 'admin';
                 <span class="who">Hi, <?= e($_SESSION['name']) ?></span>
                 <a class="btn btn-outline" href="<?= BASE_URL ?>/logout.php">Log out</a>
             <?php else: ?>
-                <a class="btn" href="<?= BASE_URL ?>/login.php">Log in</a>
+                <a class="btn" href="<?= BASE_URL ?>/index.php">Log in</a>
             <?php endif; ?>
         </div>
     </div>
 </header>
-<main class="container">
+<main class="container"></main>

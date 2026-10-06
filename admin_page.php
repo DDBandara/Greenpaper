@@ -3,7 +3,7 @@ session_start();
 header("Cache-Control: no-store");   // stops the Back button showing this page after logout
 
 if (($_SESSION['role'] ?? '') !== 'admin') {
-    header('Location: login.php');
+    header('Location: index.php');
     exit();
 }
 ?>
