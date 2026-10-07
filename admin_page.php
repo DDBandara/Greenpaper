@@ -15,7 +15,7 @@ if (($_SESSION['role'] ?? '') !== 'admin') {
     <title>Admin</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="background-color: white;">
+<body>
     <div>
         <h1>Welcome,<span><?= htmlspecialchars($_SESSION['name']) ?></span> </h1>
         <p>This is an <span>admin</span> page.</p>

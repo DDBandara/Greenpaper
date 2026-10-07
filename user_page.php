@@ -32,18 +32,13 @@ while ($row = $result->fetch_assoc()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .category-list { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 30px; }
-        .category-list li { background: #eef2fb; color: #3b4a8a; padding: 8px 16px; border-radius: 20px; font-size: 15px; }
-        .page { padding: 24px; }
-    </style>
 </head>
-<body style="background-color: white;">
+<body>
     <div class="page">
         <h1>Welcome,<span><?= htmlspecialchars($_SESSION['name']) ?></span> </h1>
         <p>This is a <span>user</span> page.</p>
 
-        <h2 style="text-align:left; font-size:24px;">Your categories</h2>
+        <h2>Your categories</h2>
         <?php if (count($categories) > 0): ?>
             <ul class="category-list">
                 <?php foreach ($categories as $category): ?>
@@ -51,7 +46,7 @@ while ($row = $result->fetch_assoc()) {
                 <?php endforeach; ?>
             </ul>
         <?php else: ?>
-            <p style="text-align:left;">You haven't chosen any categories yet.</p>
+            <p>You haven't chosen any categories yet.</p>
         <?php endif; ?>
 
         <button onclick="window.location.href='logout.php'">Logout</button>

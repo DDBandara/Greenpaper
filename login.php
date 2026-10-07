@@ -49,13 +49,6 @@ function isActiveForm($formName, $activeForm) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login and Signup</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* The global "input" style in style.css would stretch checkboxes, so reset them here */
-        .field-label { text-align: left; font-weight: 500; margin-bottom: 8px; }
-        .category-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-        .category-options label { display: flex; align-items: center; gap: 6px; background: #eef2fb; padding: 8px 14px; border-radius: 20px; font-size: 15px; cursor: pointer; }
-        .category-options input[type="checkbox"] { width: auto; margin: 0; padding: 0; }
-    </style>
 </head>
 <body>
     <div class="container1">
