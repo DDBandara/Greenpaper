@@ -1,121 +1,160 @@
-/* ===== RESET ===== */
-* { box-sizing: border-box; }
-body{
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #fff;
+/* ===== RESET & BASE ===== */
+*{ box-sizing:border-box; }
+body{ 
+  margin:0; 
+  background:#f5f1eb; 
+  font-family: Arial, sans-serif; 
+  color:#111;
+}
+a{ text-decoration:none; color:inherit; }
+
+/* ===== TOP STRIP - NSBM GREEN UNIVERSITY / CAMPUS NEWS ===== */
+.top-strip{ 
+  border-bottom:1px solid #e5e0d8; 
+  padding:8px 15px; 
+  background:#f5f1eb;
+}
+.top-strip-inner{ 
+  width:100%;
+  display:flex; 
+  justify-content:space-between; /*left side, right side */
+  align-items:center;
+  font-size:10px; 
+  letter-spacing:0.8px; 
+  color:#777; 
+  text-transform:uppercase;
 }
 
-/* ===== HEADER ===== */
-.site-header{
-  background: #fdfbf3;
-  border-bottom: 1px solid #e9e5d9;
-  width: 100%;
+/* ===== MAIN HEADER ===== */
+.site-header{ 
+  background:#f5f1eb; 
+}
+.header-inner{ 
+  width:100%;
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  padding:22px 15px; /**/
 }
 
-.header-inner{
-  position: relative;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 25px 30px 45px 30px;
+/* + THE DAILY EDITION */
+.header-left{ 
+  text-align:left;
+  flex:1;
+}
+.header-left .date-main{ 
+  font-size:12px; 
+  font-weight:600; 
+  color:#111; 
+}
+.header-left .date-sub{ 
+  font-size:11px; 
+  color:#888; 
+  margin-top:3px; 
 }
 
-/* NSBM NewsDesk - Center */
-.brand{
-  display: block;
-  text-align: center;
-  font-family: 'Times New Roman', serif;
-  font-size: 42px;
-  font-weight: 800;
-  color: #222;
-  text-decoration: underline;
-  text-underline-offset: 8px;
+/* Center- NSBM NewsDesk */
+.header-center{ 
+  text-align:center; 
+  flex:1;
 }
-.brand span{ font-weight: 400; }
-.brand:hover{ color: #222; }
-
-/* Home + My feed - Left Side */
-.main-nav{
-  position: absolute;
-  left: 30px;
-  bottom: 12px;
-  display: flex;
-  gap: 15px;
+.brand{ 
+  font-family:'Times New Roman', Times, serif; 
+  font-size:44px; 
+  font-weight:900; 
+  color:#111; 
+  letter-spacing:-0.5px; 
+  line-height:1; 
 }
-.main-nav a{
-  font-size: 14px;
-  color: #7a7ab8;
-  text-decoration: underline;
+.brand-sub{ 
+  font-size:9px !important; 
+  letter-spacing:2.2px !important; 
+  color:#999 !important; 
+  margin-top:6px; 
+  text-transform:uppercase; 
 }
 
-/* Hi + Log out - Right Side */
-.user-area{
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  transform: translateY(-20%);
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* Right side - My feed, Log out, Submit */
+.header-right{ 
+  display:flex; 
+  align-items:center; 
+  justify-content:flex-end; /* right side */
+  gap:20px; 
+  flex:1;
 }
-.who{
-  font-size: 14px;
-  color: #888;
+.header-right a{ 
+  font-size:12px; 
+  color:#111; 
 }
-.user-area .btn,
-.user-area .btn-outline{
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  font-size: 14px;
-  color: #7a7ab8 !important;
-  text-decoration: underline;
-  box-shadow: none !important;
+.btn-submit{ 
+  background:#8b1a1a !important; 
+  color:#fff !important; 
+  padding:11px 18px !important; 
+  font-size:12px !important; 
+  font-weight:600 !important; 
+  border:none !important;
+  display:inline-block;
 }
+.btn-submit:hover{ background:#6e1515 !important; }
 
-/* ===== CONTAINER ===== */
-.container{
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 30px;
-  min-height: 75vh;
+/* ===== CAT NAV - Latest Academic Events Sports General + Search ===== */
+.cat-nav{ 
+  border-top:2px solid #111; 
+  border-bottom:1px solid #ddd; 
+  background:#f5f1eb; 
 }
+.cat-nav-inner{ 
+  width:100%;
+  display:flex; 
+  justify-content:center; 
+  align-items:center; 
+  gap:60px; 
+  padding:0 15px; 
+  height:42px; 
+  position:relative; 
+}
+.cat-nav-inner a{ 
+  font-size:12px; 
+  color:#111; 
+  padding:12px 0; 
+}
+.cat-nav-inner a.active{ 
+  color:#8b1a1a; 
+  border-bottom:2px solid #8b1a1a; 
+}
+.search-area{ 
+  position:absolute; 
+  right:15px; /* right side */
+  font-size:12px; 
+  display:flex; 
+  align-items:center; 
+  gap:8px; 
+  cursor:pointer;
+}
+.search-icon{ font-size:18px; }
 
-/* ===== FOOTER ===== */
-.site-footer{
-  background: #fdfbf3;
-  border-top: 1px solid #e9e5d9;
-}
-.footer-inner{
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #999;
-}
-/* ===== NSBM GREEN UNIVERSITY NEWS + Daate ===== */
-.top-left{
-  position:absolute;
-  margin: left 0px;
-  left: -40px;
-  top: 12px;
-  text-align: left;
-  line-height: 1.2;
-}
-.uni-name{
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: #333;
-}
-.date-line{
-  font-size: 14px;
-  color: #888;
-  margin-top: 12px;
-  text-transform: capitalize;
-}
+/* ===== CONTAINER & REST ===== */
+.container{ max-width:1250px; margin:0 auto; padding:0 15px; }
+
+/* Breaking */
+.breaking{ background:#fff3cd; border:1px solid #ffe69c; padding:10px 15px; margin:15px 0; display:flex; gap:10px; font-size:13px; }
+.breaking strong{ color:#8b1a1a; text-transform:uppercase; font-size:11px; }
+
+/* Featured */
+.featured{ background:#fff; border:1px solid #e5e0d8; padding:25px; margin-bottom:20px; }
+.featured h1{ font-family:'Times New Roman', serif; font-size:28px; margin:10px 0; }
+.tag{ font-size:10px; padding:3px 8px; background:#eee; text-transform:uppercase; }
+
+/* Layout */
+.layout{ display:flex; gap:20px; }
+.main-col{ flex:2; }
+.sidebar{ flex:1; }
+.card-grid{ display:grid; gap:15px; }
+.card{ background:#fff; border:1px solid #e5e0d8; display:flex; }
+.card-thumb{ width:120px; background:#ddd; }
+.card-body{ padding:12px; }
+.card-body h3{ font-size:15px; margin:6px 0; }
+.card-body p{ font-size:13px; color:#666; }
+.meta{ font-size:11px; color:#999; }
+.panel{ background:#fff; border:1px solid #e5e0d8; padding:15px; margin-bottom:15px; }
+.section-title{ font-size:14px; font-weight:700; margin-bottom:10px; text-transform:uppercase; }
