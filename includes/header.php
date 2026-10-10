@@ -1,23 +1,7 @@
 <?php
-// Shared header. Every page includes this at the top:
-//   $pageTitle = 'Page name';
-//   require_once __DIR__ . '/includes/header.php';   (use ../includes/ from inside admin/)
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Your project folder name inside htdocs. Change it if your folder is called something else.
-if (!defined('BASE_URL')) {
-    define('BASE_URL', '/newsdesk1.0');
-}
-
-// Short helper: print text safely. Use e($value) for ALL user/database text.
-if (!function_exists('e')) {
-    function e($value) {
-        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
-    }
-}
-
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+if (!defined('BASE_URL')) { define('BASE_URL', '/newsdesk1.0'); }
+if (!function_exists('e')) { function e($value) { return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'); } }
 $pageTitle = $pageTitle ?? 'NSBM NewsDesk';
 $loggedIn  = isset($_SESSION['user_id']);
 $isAdmin   = ($_SESSION['role'] ?? '') === 'admin';
@@ -33,7 +17,14 @@ $isAdmin   = ($_SESSION['role'] ?? '') === 'admin';
 <body>
 <header class="site-header">
     <div class="header-inner">
+        <!-- NSBM GREEN UNIVERSITY NEWS ADDING -->
+        <div class="top-left">
+            <div class="uni-name">NSBM GREEN UNIVERSITY NEWS</div>
+            <div class="date-line"><?= date('l, F j, Y') ?></div>
+        </div>
+
         <a class="brand" href="<?= BASE_URL ?>/index.php">NSBM <span>NewsDesk</span></a>
+        
         <nav class="main-nav">
             <a href="<?= BASE_URL ?>/index.php">Home</a>
             <?php if ($loggedIn): ?>
