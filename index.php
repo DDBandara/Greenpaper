@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'NSBM NewsDesk - Home';
-require_once __DIR__ . '/includes/header.php';
+require_once DIR . '/includes/header.php';
 
 // ================= FAKE DATA (replace later with database queries) =================
 // Each article needs these fields: id, title, category, summary, date.
@@ -97,4 +97,5 @@ function catClass($name) {
     </aside>
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once DIR . '/includes/footer.php'; ?>
+        
