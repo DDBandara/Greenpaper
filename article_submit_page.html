@@ -1,95 +1,57 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <style>
-            option{
-                width: 90%;
-                height: 20px;
-            }
-        </style>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit an article</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <p class="eyebrow">Write for NSBM NewsDesk</p>
+    <h1>Submit an article</h1>
+    <p class="lede">An admin reviews every submission before it is published.</p>
 
-        <link rel="stylesheet" href="style.css">
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"></script> -->
+    <form method="post" action="submit_article.php" enctype="multipart/form-data">
 
-    </head>
-    <body>
-        <header>
+      <div class="left">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" class="title" placeholder="Article title" required>
 
-        </header>
-        <nav>
+        <label for="summary">Summary (one or two sentences, shown on the card)</label>
+        <textarea id="summary" name="summary" class="summary" placeholder="A short summary of the story" required></textarea>
 
-        </nav>
-        <main>
-            <div class="main" id="main">
-                <div class="m1" id="formbox">
-                    <h2 id="formtitle">Article Submit Form</h2>
+        <label for="body">Body</label>
+        <textarea id="body" name="body" class="body" placeholder="Write the article here" required></textarea>
+      </div>
 
-                    <form action="" id="submitform">
+      <div class="right">
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="" disabled selected>Choose a category</option>
+          <option value="academic">Academic</option>
+          <option value="events">Events</option>
+          <option value="sports">Sports</option>
+          <option value="general">General</option>
+          <option value="campus-news">Campus News</option>
+        </select>
 
-                        <label  for="title">TITLE</label><br>
-                        <input type="text" name="articletitle" id="articletitleinput" placeholder="Article Title" ><br><br><br>
+        <label for="image">Image (optional)</label>
+        <input type="file" id="image" name="image" class="upload" accept="image/png, image/jpeg">
+        <small>JPG or PNG, max 2 MB</small>
 
+        <button type="submit" name="action" value="submit" class="primary">Submit for approval</button>
+        <button type="submit" name="action" value="draft" class="secondary" formnovalidate>Save draft</button>
 
-                        <label  for="summary">SUMMARY <small>(ONE OR TWO SENTENCES,SHOWN ON THE CARD)</small></label><br>
-                        <textarea name="summary" id="articlesummery" placeholder="A short summary of the story "></textarea><br><br><br>
+        <div class="how">
+          <h2>How it works</h2>
+          <p><span>1</span> You submit the article.</p>
+          <p><span>2</span> An admin reads it.</p>
+          <p><span>3</span> It is published, or sent back with feedback.</p>
+        </div>
+      </div>
 
-                        <label  for="bodyofarticle">BODY</label><br>
-                        <textarea id="my-editor" name="articlebody" placeholder="Write the article here"></textarea><br><br><br>
-
-                        <label for="category">CATEGORY</label><br><br>
-                        <select id="category" name="category" class="custom-select" required>
-                            
-                            <option  disabled selected hidden>Choose a category</option>
-                            <option  value="academic">Academic</option>
-                            <option value="events" >Events</option>
-                            <option value="sports" >Sports</option>
-                            <option value="general" >General</option>
-                            <option value="campus-news" >Campus News</option>
-                            
-
-                        </select><br><br>
-
-                        <label for="artclefiles">IMAGE (OPTIONAL)</label><br><br>
-                        
-                            
-                        <input type="file" id="file" accept="image/png, image/jpeg" ><br><br><br>
-
-                        <input class="button" id="b1" type="button" value="Submit for approval"><br><br>
-                        <input class="button" id="b2" type="button" value="Save draft">
-
-                    </form>
-
-                    <div class="how">
-                        <div class="how1"><h3>How it works</h3></div>
-                        <div class="how1"><h4>1.You submit the article.</h4></div>
-                        <div class="how1"><h4>2.An admin reads it.</h4></div>
-                        <div class="how1"><h4>3.It is published, or sent back with feedback..</h4></div>
-                        
-                    </div>
-                </div>
-                <div id="previwebox">
-                    <h2 style="text-align: center;">Artcle previwe</h2>
-                 
-
-                </div>
-               
-            </div>
-            
-
-        </main>
-        <!-- <script>
-            tinymce.init({
-                selector: '#my-editor',
-                height: 400, // Change this value to make it taller or shorter (in pixels)
-                width: '90%', // Can be pixels (e.g., 800) or percentage (e.g., '100%')
-                plugins: '...',
-                toolbar: '...'
-            });
-        </script> -->
-        <footer>
-
-        </footer>
-        
-
-    </body>
+    </form>
+  </div>
+</body>
 </html>
