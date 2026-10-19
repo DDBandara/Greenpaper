@@ -1,0 +1,20 @@
+/* Basic styles for the login, register, user and admin pages. */
+* { box-sizing: border-box; }
+body { font-family: sans-serif; margin: 0; }
+.container1 { max-width: 450px; margin: 40px auto; padding: 0 16px; }
+.page { padding: 16px; }
+
+/* script.js shows one box at a time. Keep these two rules. */
+.form-box { display: none; border: 1px solid #999; padding: 20px; }
+.form-box.active { display: block; }
+
+input, select { display: block; width: 100%; padding: 8px; margin-bottom: 12px; }
+input[type="checkbox"] { display: inline; width: auto; margin: 0 6px 0 0; }
+button { padding: 8px 16px; }
+form button { width: 100%; }
+
+.error-message, .success-message { border: 1px solid #999; padding: 8px; margin-bottom: 12px; }
+.category-options label { margin-right: 12px; }
+
+.category-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.category-list li { border: 1px solid #999; padding: 4px 12px; }
