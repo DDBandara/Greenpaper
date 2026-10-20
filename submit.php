@@ -1,5 +1,4 @@
 <?php
-// Submit-an-article page. Only logged-in users can open it.
 session_start();
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/includes/functions.php';
@@ -11,13 +10,10 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Security token for the form (checked again in submit_article.php)
 if (empty($_SESSION['csrf'])) { $_SESSION['csrf'] = bin2hex(random_bytes(32)); }
 
-// The category list comes from the database, so the form always matches the real categories
-$categories = tryRows($conn, "SELECT id, name FROM categories ORDER BY name") ?? [];
+$categories = getRows($conn, "SELECT id, name FROM categories ORDER BY name") ?? [];
 
-// Messages and previously typed values left by submit_article.php (shown once)
 $errors = $_SESSION['submit_errors'] ?? [];
 $old    = $_SESSION['submit_old'] ?? [];
 $ok     = $_SESSION['submit_ok'] ?? '';
@@ -34,26 +30,26 @@ require_once __DIR__ . '/includes/header.php';
     <p class="lede">An admin reviews every submission before it is published.</p>
 
     <?php if ($ok): ?>
-        <div class="notice notice-ok"><?= e($ok) ?></div>
+        <div class="notice notice-ok"><?= safe($ok) ?></div>
     <?php endif; ?>
     <?php if ($errors): ?>
         <div class="notice notice-error">
-            <?php foreach ($errors as $err): ?><div><?= e($err) ?></div><?php endforeach; ?>
+            <?php foreach ($errors as $err): ?><div><?= safe($err) ?></div><?php endforeach; ?>
         </div>
     <?php endif; ?>
 
     <form method="post" action="<?= BASE_URL ?>/submit_article.php" enctype="multipart/form-data">
-        <input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>">
+        <input type="hidden" name="csrf" value="<?= safe($_SESSION['csrf']) ?>">
 
         <div class="left">
             <label for="title">Title</label>
-            <input type="text" id="title" name="title" class="title" maxlength="200" placeholder="Article title" value="<?= e($old['title'] ?? '') ?>" required>
+            <input type="text" id="title" name="title" class="title" maxlength="200" placeholder="Article title" value="<?= safe($old['title'] ?? '') ?>" required>
 
             <label for="summary">Summary (one or two sentences, shown on the card)</label>
-            <textarea id="summary" name="summary" class="summary" maxlength="300" placeholder="A short summary of the story" required><?= e($old['summary'] ?? '') ?></textarea>
+            <textarea id="summary" name="summary" class="summary" maxlength="300" placeholder="A short summary of the story" required><?= safe($old['summary'] ?? '') ?></textarea>
 
             <label for="body">Body</label>
-            <textarea id="body" name="body" class="body-text" placeholder="Write the article here" required><?= e($old['body'] ?? '') ?></textarea>
+            <textarea id="body" name="body" class="body-text" placeholder="Write the article here" required><?= safe($old['body'] ?? '') ?></textarea>
         </div>
 
         <div class="right">
@@ -61,7 +57,7 @@ require_once __DIR__ . '/includes/header.php';
             <select id="category" name="category" required>
                 <option value="" disabled <?= empty($old['category']) ? 'selected' : '' ?>>Choose a category</option>
                 <?php foreach ($categories as $c): ?>
-                    <option value="<?= (int)$c['id'] ?>" <?= (($old['category'] ?? '') == $c['id']) ? 'selected' : '' ?>><?= e($c['name']) ?></option>
+                    <option value="<?= (int)$c['id'] ?>" <?= (($old['category'] ?? '') == $c['id']) ? 'selected' : '' ?>><?= safe($c['name']) ?></option>
                 <?php endforeach; ?>
             </select>
 
