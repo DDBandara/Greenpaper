@@ -1,0 +1,115 @@
+.category-head {
+    margin: 30px 0;
+    padding-bottom: 26px;
+    border-bottom: 1px solid var(--ink);
+}
+.category-head h1 {
+    margin: 6px 0 12px;
+    font-family: var(--serif);
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+}
+.category-head p {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.category-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 40px;
+    align-items: start;
+}
+
+.side-count {
+    margin-bottom: 8px;
+    text-align: right;
+    font-size: 12px;
+    color: var(--muted);
+}
+.follow-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 24px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+}
+.follow-btn:hover {
+    background: var(--accent-tint);
+}
+.follow-btn.following {
+    background: var(--accent);
+    color: #fff;
+}
+
+.other-box {
+    border: 1px solid var(--line);
+}
+.other-box h3 {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+}
+.other-box li {
+    border-bottom: 1px solid var(--line);
+}
+.other-box li:last-child {
+    border-bottom: none;
+}
+.other-box a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    font-size: 14px;
+}
+.other-box a:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+.other-count {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.pager {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted);
+}
+.pager-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.pager-links a:hover {
+    color: var(--accent);
+}
+.pager .current {
+    color: var(--ink);
+    font-weight: 600;
+}
+.pager .off {
+    opacity: 0.35;
+}
+
+@media (max-width: 900px) {
+    .category-layout {
+        grid-template-columns: 1fr;
+    }
+    .category-head h1 {
+        font-size: 38px;
+    }
+}
