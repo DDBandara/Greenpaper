@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/header.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,5 +78,6 @@
             </div>
         </div>
     </div>
+    <?php require_once __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
