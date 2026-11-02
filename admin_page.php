@@ -1,5 +1,14 @@
 <html>
     <head>
+        <?php
+session_start();
+header("Cache-Control: no-store");   // stops the Back button showing this page after logout
+
+if (($_SESSION['role'] ?? '') !== 'admin') {
+    header('Location: login.php');
+    exit();
+}
+?>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Green Paper Admin</title>
@@ -329,6 +338,11 @@
         
 
         </main>
+            <div>
+        <h1>Welcome,<span><?= htmlspecialchars($_SESSION['name']) ?></span> </h1>
+        <p>This is an <span>admin</span> page.</p>
+        <button onclick="window.location.href='logout.php'">Logout</button>
+    </div>
         
     </body>
 </html>
