@@ -1,3 +1,61 @@
+<style>
+.main-story,
+.story,
+.news-row {
+  box-sizing: border-box;
+  background: rgba(217, 217, 217, 0.58);
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform 0.5s ease, border-color 0.5s ease;
+  padding: 20px;
+}
+
+.main-story:hover,
+.story:hover,
+.news-row:hover {
+  border-color: black;
+  transform: scale(1.05);
+}
+
+.main-story:active,
+.story:active,
+.news-row:active {
+  transform: scale(0.95) rotate(1.7deg);
+}
+</style>
+<style>
+
+.news-row {
+  box-sizing: border-box;
+  background: rgba(217, 217, 217, 0.58);
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(3px);
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform 0.5s ease, border-color 0.5s ease;
+  padding: 50px;
+  
+
+}
+.more .news-row {
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+
+.news-row:hover {
+  border-color: black;
+  transform: scale(0.9);
+}
+
+.news-row:active {
+  transform: scale(0.95) rotate(1.7deg);
+}
+</style>
 <?php
 if (!defined('BASE_URL')) {
     define('BASE_URL', '/newsdesk1.0');
@@ -54,3 +112,4 @@ function newsRow($story) {
     <?php
     return ob_get_clean();
 }
+
