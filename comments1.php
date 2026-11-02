@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments</title>
+    <link rel="stylesheet" href="comments1.css">
+</head>
+<body>
+    <div class="container_1">
+        <!--Header Section-->
+        <header class="header">
+            <div class="header-top">
+                <span class="title">COMMENTS <span class="count">3</span></span>
+            </div>
+            <nav class="tabs">
+                <button class="tab active">Visible <span>2</span></button>
+                <button class="tab">Hidden <span>1</span></button>
+                <button class="tab">All <span>3</span></button>
+            </nav>
+        </header>
+        <!--Comments List-->
+        <div class="comments-list">
+            <div class="comment-item">
+                <div class="comment-content">
+                    <p class="comment-text">Congratulations to the whole team. The build must have taken a huge effort.</p>
+                    <div class="comment-meta">
+                        <span class="author">Kasun D.</span>
+                        <span class="dot">•</span>
+                        <span class="article">on "NSBM students win the national robotics challenge"</span>
+                        <span class="dot">•</span>
+                        <span class="time">2 hours ago</span>
+                    </div>
+                </div>
+                <div class="comment-actions">
+                    <button class="action-btn">Hide</button>
+                    <button class="action-btn delete">Delete</button>
+                </div>
+            </div>
+            <div class="comment-item">
+                <div class="comment-content">
+                    <p class="comment-text">Great result. Will the team run a workshop for first years?</p>
+                    <div class="comment-meta">
+                        <span class="author">Ishara W.</span>
+                        <span class="dot">•</span>
+                        <span class="article">on "NSBM students win the national robotics challenge"</span>
+                        <span class="dot">•</span>
+                        <span class="time">1 hour ago</span>
+                    </div>
+                </div>
+                <div class="comment-actions">
+                    <button class="action-btn">Hide</button>
+                    <button class="action-btn delete">Delete</button>
+                </div>
+            </div>
+            <!-- Comment 3 (Hidden) -->
+            <div class="comment-item hidden-comment">
+                <div class="badge">HIDDEN</div>
+                <div class="comment-content">
+                    <p class="comment-text muted">Click here for free marks!!! (link removed)</p>
+                    <div class="comment-meta">
+                        <span class="author">Anonymous</span>
+                        <span class="dot">•</span>
+                        <span class="article">on "Semester 2 exam timetable published"</span>
+                        <span class="dot">•</span>
+                        <span class="time">yesterday</span>
+                    </div>
+                </div>
+                <div class="comment-actions">
+                    <button class="action-btn">Show</button>
+                    <button class="action-btn delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
