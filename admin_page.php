@@ -224,7 +224,7 @@ if (($_SESSION['role'] ?? '') !== 'admin') {
                 <a  href="#">Articles</a>
                 <a  href="#">Categories</a>
                 <a  href="#">Announcements</a>
-                <a  href="#">Comments</a>
+                <a  href="comments1.php">Comments</a>
                 <a  href="#">Users</a>
                 <a  href="#">Reports</a>
             </nav>
