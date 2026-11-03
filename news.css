@@ -386,3 +386,73 @@ i{ font-style:normal; }
 
   .footer-box{ flex-direction:column; text-align:center; }
 }
+/* 
+body {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("/newsdesk1.0/uploads/campus.jpg") center / cover no-repeat;
+  filter: blur(8px);
+  transform: scale(1.03); /* hides blurred edges */
+} */
+
+/* 
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.3);
+} */
+
+
+.main-story,
+.story,
+.news-row {
+  box-sizing: border-box;
+  background: rgba(217, 217, 217, 0.58);
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform 0.5s ease, border-color 0.5s ease;
+}
+
+.main-story,
+.story {
+  padding: 20px;
+}
+
+.more .news-row {
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.main-story:hover,
+.story:hover,
+.news-row:hover {
+  border-color: #000;
+  transform: scale(1.05);
+}
+
+.main-story:active,
+.story:active,
+.news-row:active {
+  transform: scale(0.95) rotate(1.7deg);
+}
+
+.main-story,
+.story,
+.news-row {
+  background: rgba(217, 217, 217, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+}

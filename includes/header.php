@@ -48,6 +48,7 @@ $cat = ($page === 'category.php') ? ($_GET['name'] ?? '') : '';
       <?php if ($loggedIn): ?>
         <a href="<?= BASE_URL ?>/user_page.php">My feed</a>
         <a href="<?= BASE_URL ?>/logout.php">Log out</a>
+        <a href="<?= BASE_URL ?>/admin_page.php">Admin</a>
       <?php else: ?>
         <a href="<?= BASE_URL ?>/login.php">Log in</a>
       <?php endif; ?>

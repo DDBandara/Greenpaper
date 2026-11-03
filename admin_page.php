@@ -1,14 +1,42 @@
-<html>
-    <head>
-        <?php
-session_start();
-header("Cache-Control: no-store");   // stops the Back button showing this page after logout
+<?php
+require_once __DIR__ . '/includes/admin.php';
 
-if (($_SESSION['role'] ?? '') !== 'admin') {
-    header('Location: login.php');
-    exit();
+$totals = getRows($conn, "SELECT SUM(status = 'approved') AS published,
+                                 SUM(status = 'pending') AS pending,
+                                 COALESCE(SUM(views), 0) AS views
+                          FROM articles")[0] ?? [];
+$published = (int)($totals['published'] ?? 0);
+$pending = (int)($totals['pending'] ?? 0);
+$views = (int)($totals['views'] ?? 0);
+$average = $published ? (int)round($views / $published) : 0;
+$users = (int)(getRows($conn, 'SELECT COUNT(*) AS total FROM users')[0]['total'] ?? 0);
+
+$waiting = getRows($conn, "SELECT a.id, a.title, a.created_at, c.name AS category, u.name AS author
+                           FROM articles a
+                           JOIN categories c ON c.id = a.category_id
+                           JOIN users u ON u.id = a.author_id
+                           WHERE a.status = 'pending'
+                           ORDER BY a.created_at ASC
+                           LIMIT 5") ?? [];
+
+$popular = getRows($conn, "SELECT id, title, views FROM articles
+                           WHERE status = 'approved'
+                           ORDER BY views DESC, published_at DESC
+                           LIMIT 5") ?? [];
+
+$byCategory = getRows($conn, "SELECT c.name, COALESCE(SUM(a.views), 0) AS views
+                              FROM categories c
+                              LEFT JOIN articles a ON a.category_id = c.id AND a.status = 'approved'
+                              GROUP BY c.id, c.name
+                              ORDER BY views DESC, c.name") ?? [];
+$mostViews = 1;
+foreach ($byCategory as $row) {
+    $mostViews = max($mostViews, (int)$row['views']);
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Green Paper Admin</title>
@@ -52,7 +80,7 @@ if (($_SESSION['role'] ?? '') !== 'admin') {
             .topbar a{
                 color: #fff;
                 text-decoration: none;
-                font-size: 20px;
+                font-size: 16px;
             }
             .topbar a.active{
                 border-bottom: 2px solid #fff;
@@ -212,137 +240,142 @@ if (($_SESSION['role'] ?? '') !== 'admin') {
                 }
             }
 
-        </style>
 
+            .btn{
+                display: inline-block;
+                text-decoration: none;
+                font-size: 14px;
+            }
+            .row h3 a{
+                color: inherit;
+                text-decoration: none;
+            }
+            .row h3 a:hover, .read li a:hover{
+                color: var(--green);
+            }
+            .read li a{
+                color: #222;
+                text-decoration: none;
+            }
+            .read li em{
+                color: #666;
+                font-style: normal;
+                font-size: 13px;
+            }
+            .empty{
+                padding: 22px;
+                color: #666;
+            }
+            .stat .note{
+                margin-top: 6px;
+                font-size: 14px;
+                color: #555;
+            }
+            .user a{
+                margin-left: 12px;
+                font-size: 14px;
+            }
+        </style>
     </head>
     <body>
         <header class="topbar">
             <h2 class="logo">Green Paper</h2>
             <nav>
-                <a class="active" href="#">Overview</a>
-                <a  href="#">Pending</a>
-                <a  href="#">Articles</a>
-                <a  href="#">Categories</a>
-                <a  href="#">Announcements</a>
-                <a  href="comments1.php">Comments</a>
-                <a  href="#">Users</a>
-                <a  href="#">Reports</a>
+                <a class="active" href="<?= BASE_URL ?>/admin_page.php">Overview</a>
+                <a href="<?= BASE_URL ?>/admin/pending.php">Pending</a>
+                <a href="<?= BASE_URL ?>/admin/articles.php">Articles</a>
+                <a href="<?= BASE_URL ?>/admin/categories.php">Categories</a>
+                <a href="<?= BASE_URL ?>/admin/announcements.php">Announcements</a>
+                <a href="<?= BASE_URL ?>/admin/comments.php">Comments</a>
+                <a href="<?= BASE_URL ?>/admin/users.php">Users</a>
+                <a href="<?= BASE_URL ?>/admin/reports.php">Reports</a>
             </nav>
-            <div class="user">Hi Admin <a href="#">Log Out</a></div>
+            <div class="user">Hi <?= safe($_SESSION['name']) ?> <a href="<?= BASE_URL ?>/logout.php">Log Out</a></div>
         </header>
         <main class="container">
             <div class="eyebrow-row">
                 <span class="eyebrow">OVERVIEW</span>
-                <span class="date">Tuesday, 13 October 2026</span>
+                <span class="date"><?= date('l, j F Y') ?></span>
             </div>
             <h1>Today at Green Paper</h1>
 
             <section class="stats">
                 <div class="stat">
-                    <div class="num">14</div>
+                    <div class="num"><?= $published ?></div>
                     <div class="label">PUBLISHED ARTICLES</div>
-                    <p>Live on the site</p>
+                    <p class="note">Live on the site</p>
                 </div>
                 <div class="stat">
-                    <div class="num warn">2</div>
+                    <div class="num<?= $pending ? ' warn' : '' ?>"><?= $pending ?></div>
                     <div class="label">WAITING FOR APPROVAL</div>
-                    <p>Needs an admin</p>
+                    <p class="note"><?= $pending ? 'Needs an admin' : 'All caught up' ?></p>
                 </div>
                 <div class="stat">
-                    <div class="num">128</div>
+                    <div class="num"><?= $views ?></div>
                     <div class="label">TOTAL VIEWS</div>
-                    <p>9 per published article</p>
+                    <p class="note"><?= $average ?> per published article</p>
                 </div>
                 <div class="stat">
-                    <div class="num">5</div>
-                    <div class="lable">REGISTERED USERS</div>
-                    <p><a href="#">Manage users</a></p>
+                    <div class="num"><?= $users ?></div>
+                    <div class="label">REGISTERED USERS</div>
+                    <p class="note"><a href="<?= BASE_URL ?>/admin/users.php">Manage users</a></p>
                 </div>
-
-                
-
             </section>
+
             <div class="layout">
                 <div class="col-left">
                     <section class="card">
-                        <div class="card-head"><h2>Waiting for approval</h2><a href="#">Review all</a></div>
-                        
-                       
-                        <div class="row">
-                            <div><h3>Football Trials for the University Team</h3>
-                                <small>By A. Perera • Sports 07 Oct 2026</small>
+                        <div class="card-head"><h2>Waiting for approval</h2><a href="<?= BASE_URL ?>/admin/pending.php">Review all</a></div>
+                        <?php foreach ($waiting as $item): ?>
+                            <div class="row">
+                                <div>
+                                    <h3><a href="<?= storyLink($item['id']) ?>"><?= safe($item['title']) ?></a></h3>
+                                    <small>By <?= safe($item['author']) ?> &bull; <?= safe($item['category']) ?> &bull; <?= showDate($item['created_at']) ?></small>
+                                </div>
+                                <a class="btn" href="<?= BASE_URL ?>/admin/pending.php">Review</a>
                             </div>
-                            <button class="btn">Review</button>
-
-                        </div>
-                        <div class="row">
-                            <div><h3>Career Fair Returns With 40 Employers</h3>
-                                <small>By S. Fernando • Events • 06 Oct 2026</small>
-                            </div>
-                            <button class="btn">Review</button>
-
-                        </div>
+                        <?php endforeach; ?>
+                        <?php if (!$waiting): ?>
+                            <p class="empty">Nothing is waiting for approval.</p>
+                        <?php endif; ?>
                     </section>
 
                     <section class="card">
                         <div class="card-head"><h2>Views by category</h2></div>
-                        <div class="bar-row">
-                            <span>Academic</span>
-                            <div class="track"><div class="fill" style="width: 100%;"></div></div>
-                            <b>49</b>
-                        </div>
-                        <div class="bar-row">
-                            <span>Events</span>
-                            <div class="track"><div class="fill" style="width: 78%;"></div></div>
-                            <b>38</b>
-                        </div>
-                        <div class="bar-row">
-                            <span>General</span>
-                            <div class="track"><div class="fill" style="width: 49%;"></div></div>
-                            <b>28</b>
-                        </div>
-                        <div class="bar-row">
-                            <span>Sports</span>
-                            <div class="track"><div class="fill" style="width: 35%;"></div></div>
-                            <b>17</b>
-                        </div>
+                        <?php foreach ($byCategory as $row): ?>
+                            <div class="bar-row">
+                                <span><?= safe($row['name']) ?></span>
+                                <div class="track"><div class="fill" style="width: <?= (int)round($row['views'] / $mostViews * 100) ?>%;"></div></div>
+                                <b><?= (int)$row['views'] ?></b>
+                            </div>
+                        <?php endforeach; ?>
                     </section>
-                    
                 </div>
 
-
-                <div class="col-right"><section class="card">
+                <div class="col-right">
+                    <section class="card">
                         <div class="card-head"><h2>Most read</h2></div>
                         <ol class="read">
-                            <li><span class="rank">1</span><span>NSBM Students Win the National Robotics...</span><em>38</em></li>
-                            <li><span class="rank">2</span><span>Semester 2 Exam Timetable Published</span><em>29</em></li>
-                            <li><span class="rank">3</span><span>New Scholarship Applications Now Open</span><em>20</em></li>
-                            <li><span class="rank">4</span><span>Inter-Faculty Cricket Final This Friday</span><em>17</em></li>
-                            <li><span class="rank">5</span><span>Graduation Rehearsal on 14 October</span><em>12</em></li>
-
+                            <?php foreach ($popular as $i => $item): ?>
+                                <li><span class="rank"><?= $i + 1 ?></span><a href="<?= storyLink($item['id']) ?>"><?= safe($item['title']) ?></a><em><?= (int)$item['views'] ?></em></li>
+                            <?php endforeach; ?>
                         </ol>
+                        <?php if (!$popular): ?>
+                            <p class="empty">No published articles yet.</p>
+                        <?php endif; ?>
                     </section>
+
                     <section class="card">
                         <div class="card-head"><h2>Quick actions</h2></div>
                         <ul class="action">
-                            <li><a href="#">Write a new article<span>→</span></a></li>
-                            <li><a href="#">Manage categories<span>→</span></a></li>
-                            <li><a href="#">Announcements<span>→</span></a></li>
-                            <li><a href="#">Readership reports<span>→</span></a></li>
-
-
+                            <li><a href="<?= BASE_URL ?>/admin/article_form.php">Write a new article<span>&rarr;</span></a></li>
+                            <li><a href="<?= BASE_URL ?>/admin/categories.php">Manage categories<span>&rarr;</span></a></li>
+                            <li><a href="<?= BASE_URL ?>/admin/announcements.php">Announcements<span>&rarr;</span></a></li>
+                            <li><a href="<?= BASE_URL ?>/admin/reports.php">Readership reports<span>&rarr;</span></a></li>
                         </ul>
-                    </section></div>
-
+                    </section>
+                </div>
             </div>
-        
-
         </main>
-            <div>
-        <h1>Welcome,<span><?= htmlspecialchars($_SESSION['name']) ?></span> </h1>
-        <p>This is an <span>admin</span> page.</p>
-        <button onclick="window.location.href='logout.php'">Logout</button>
-    </div>
-        
     </body>
 </html>
