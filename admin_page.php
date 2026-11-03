@@ -282,9 +282,7 @@ foreach ($byCategory as $row) {
             <h2 class="logo">Green Paper</h2>
             <nav>
                 <a class="active" href="<?= BASE_URL ?>/admin_page.php">Overview</a>
-                <a href="<?= BASE_URL ?>/admin/pending.php">Pending</a>
-                <a href="<?= BASE_URL ?>/admin/articles.php">Articles</a>
-                <a href="<?= BASE_URL ?>/admin/categories.php">Categories</a>
+                <a href="<?= BASE_URL ?>/admin/admin_articles.php">Articles</a>
                 <a href="<?= BASE_URL ?>/admin/announcements.php">Announcements</a>
                 <a href="<?= BASE_URL ?>/admin/comments.php">Comments</a>
                 <a href="<?= BASE_URL ?>/admin/users.php">Users</a>
