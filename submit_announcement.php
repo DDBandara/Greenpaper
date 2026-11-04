@@ -1,206 +1,167 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/includes/functions.php';
+
 if (empty($_SESSION['user_id'])) {
-    header('Location: /newsdesk1.0/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit();
 }
 
 if (empty($_SESSION['announcement_csrf'])) {
     $_SESSION['announcement_csrf'] = bin2hex(random_bytes(32));
 }
+
+$notice = $_SESSION['announcement_notice'] ?? '';
+unset($_SESSION['announcement_notice']);
 ?>
-<?php if (!empty($_SESSION['announcement_notice'])): ?>
-    <div class="mb-6 p-4 text-sm border">
-        <?= htmlspecialchars($_SESSION['announcement_notice'], ENT_QUOTES, 'UTF-8') ?>
-    </div>
-    <?php unset($_SESSION['announcement_notice']); ?>
-<?php endif; ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Submit an Announcement</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            bg: '#f6f5f0',
                             green: '#1b6b3e',
                             greenHover: '#155431',
                             border: '#e2dfd5',
-                            label: '#5a5850',
-                            text: '#222220',
+                            label: '#5a5850'
                         }
                     },
                     fontFamily: {
                         serif: ['"Playfair Display"', 'Georgia', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif']
                     }
                 }
             }
-        }
+        };
     </script>
+
     <style>
         body {
-            background-color: #f6f5f0;
+            background: #f6f5f0;
             color: #222220;
-            font-family: 'Inter', sans-serif;
+            font-family: Inter, sans-serif;
         }
 
-        input:focus, textarea:focus {
+        input:focus,
+        textarea:focus {
             outline: none;
-            border-color: #1b6b3e !important;
+            border-color: #1b6b3e;
             box-shadow: 0 0 0 1px #1b6b3e;
-        }
-
-        textarea::-webkit-scrollbar {
-            width: 6px;
-        }
-        textarea::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        textarea::-webkit-scrollbar-thumb {
-            background: #d4d0c5;
-            border-radius: 3px;
         }
     </style>
 </head>
 <body class="min-h-screen px-4 py-8 md:px-12 md:py-14 lg:px-20">
-    
 
     <div class="max-w-6xl mx-auto">
-        <header class="topbar">
-            <h2 class="logo">Green Paper</h2>
-            <nav>
-                <a class="active" href="<?= BASE_URL ?>/admin_page.php">Overview</a>
-                <a href="<?= BASE_URL ?>/admin/admin_articles.php">Articles</a>
-                <a href="<?= BASE_URL ?>/admin/announcements.php">Announcements</a>
-                <a href="<?= BASE_URL ?>/admin/comments.php">Comments</a>
-                <a href="<?= BASE_URL ?>/admin/users.php">Users</a>
-                <a href="<?= BASE_URL ?>/admin/reports.php">Reports</a>
-            </nav>
-            <div class="user">Hi <?= safe($_SESSION['name']) ?> <a href="<?= BASE_URL ?>/logout.php">Log Out</a></div>
-        </header>
-        
-        <div id="statusMessage" class="hidden mb-6 p-4 text-sm rounded-none border"></div>
+        <div class="mb-8">
+            <a href="<?= safe(BASE_URL) ?>/index.php"
+               class="font-serif text-2xl text-gray-900">
+                Green Paper
+            </a>
+        </div>
+
+        <?php if ($notice !== ''): ?>
+            <div class="mb-6 border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+                <?= safe($notice) ?>
+            </div>
+        <?php endif; ?>
 
         <header class="mb-8 md:mb-10">
-            <p class="text-[11px] font-semibold tracking-wider text-brand-green uppercase mb-2">WRITE FOR NSBM NEWSDESK</p>
-            <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-gray-900 font-normal tracking-tight mb-3">Submit an announcement</h1>
-            <p class="text-base text-gray-600 font-normal">An admin reviews every submission before it is published.</p>
+            <p class="mb-2 text-[11px] font-semibold uppercase tracking-wider text-brand-green">
+                Write for NSBM NewsDesk
+            </p>
+            <h1 class="mb-3 font-serif text-4xl font-normal tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+                Submit an announcement
+            </h1>
+            <p class="text-base text-gray-600">
+                An admin reviews every submission before it is published.
+            </p>
         </header>
 
-        <form method="post" action="announcement_submit.php" id="announcementForm"
-      class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-      <input type="hidden" name="csrf"
-       value="<?= htmlspecialchars($_SESSION['announcement_csrf'], ENT_QUOTES, 'UTF-8') ?>">
-            
-            <div class="lg:col-span-8 flex flex-col gap-6">
-                
+        <form method="post"
+              action="<?= safe(BASE_URL) ?>/announcement_submit.php"
+              class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+
+            <input type="hidden"
+                   name="csrf"
+                   value="<?= safe($_SESSION['announcement_csrf']) ?>">
+
+            <div class="flex flex-col gap-6 lg:col-span-8">
                 <div>
-                    <label for="title" class="block text-[11px] font-bold tracking-wider text-brand-label uppercase mb-2">
-                        TITLE
+                    <label for="title"
+                           class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-brand-label">
+                        Title
                     </label>
-                    <input 
-                        type="text" 
-                        id="title" 
-                        name="title" 
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        maxlength="200"
                         required
-                        placeholder="Announcement title" 
-                        class="w-full bg-[#fcfcf9] border border-brand-border rounded-none px-4 py-3 text-base text-gray-800 placeholder-gray-400 transition-colors"
-                    />
+                        placeholder="Announcement title"
+                        class="w-full border border-brand-border bg-[#fcfcf9] px-4 py-3 text-base text-gray-800 placeholder-gray-400">
                 </div>
 
                 <div>
-                    <label for="body" class="block text-[11px] font-bold tracking-wider text-brand-label uppercase mb-2">
-                        DESCRIPTION
+                    <label for="body"
+                           class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-brand-label">
+                        Description
                     </label>
-                    <textarea 
-                        id="body" 
-                        name="body" 
-                        rows="14" 
+                    <textarea
+                        id="body"
+                        name="body"
+                        rows="14"
+                        maxlength="10000"
                         required
-                        placeholder="Write your announcement details here..." 
-                        class="w-full bg-[#fcfcf9] border border-brand-border rounded-none px-4 py-3 text-base text-gray-800 placeholder-gray-400 transition-colors resize-y min-h-[320px]"
-                    ></textarea>
+                        placeholder="Write your announcement details here..."
+                        class="min-h-[320px] w-full resize-y border border-brand-border bg-[#fcfcf9] px-4 py-3 text-base text-gray-800 placeholder-gray-400"></textarea>
                 </div>
-
             </div>
 
-            <div class="lg:col-span-4 flex flex-col gap-6">
-                
-                <div class="flex flex-col gap-3">
-                    <button 
-                        type="submit" 
-                        class="w-full bg-brand-green hover:bg-brand-greenHover text-white font-bold py-3.5 px-4 text-sm transition-colors text-center"
-                    >
-                        Submit announcement
-                    </button>
-                    <button 
-                        type="button" 
-                        onclick="saveDraft()" 
-                        class="w-full bg-[#fcfcf9] hover:bg-gray-100 text-gray-900 font-bold py-3 px-4 text-sm border border-brand-border transition-colors text-center"
-                    >
-                        Save draft
-                    </button>
-                </div>
+            <div class="flex flex-col gap-6 lg:col-span-4">
+                <button
+                    type="submit"
+                    class="w-full bg-brand-green px-4 py-3.5 text-center text-sm font-bold text-white transition-colors hover:bg-brand-greenHover">
+                    Submit announcement
+                </button>
 
                 <div class="border border-brand-border bg-[#fbfbfa]">
-                    <div class="p-5 border-b border-brand-border">
-                        <h3 class="font-serif text-xl text-gray-900 font-normal">How it works</h3>
+                    <div class="border-b border-brand-border p-5">
+                        <h2 class="font-serif text-xl font-normal text-gray-900">
+                            How it works
+                        </h2>
                     </div>
-                    <div class="divide-y divide-brand-border">
-                        <div class="p-4 flex items-start gap-4">
-                            <span class="font-serif text-2xl text-brand-green leading-none pt-0.5">1</span>
-                            <p class="text-xs text-gray-700 leading-relaxed pt-1">You submit the announcement.</p>
-                        </div>
-                        <div class="p-4 flex items-start gap-4">
-                            <span class="font-serif text-2xl text-brand-green leading-none pt-0.5">2</span>
-                            <p class="text-xs text-gray-700 leading-relaxed pt-1">An admin reads it.</p>
-                        </div>
-                        <div class="p-4 flex items-start gap-4">
-                            <span class="font-serif text-2xl text-brand-green leading-none pt-0.5">3</span>
-                            <p class="text-xs text-gray-700 leading-relaxed pt-1">It is published, or sent back with feedback.</p>
-                        </div>
-                    </div>
+                    <ol class="divide-y divide-brand-border">
+                        <li class="flex items-start gap-4 p-4">
+                            <span class="pt-0.5 font-serif text-2xl leading-none text-brand-green">1</span>
+                            <p class="pt-1 text-xs leading-relaxed text-gray-700">You submit the announcement.</p>
+                        </li>
+                        <li class="flex items-start gap-4 p-4">
+                            <span class="pt-0.5 font-serif text-2xl leading-none text-brand-green">2</span>
+                            <p class="pt-1 text-xs leading-relaxed text-gray-700">An admin reviews it.</p>
+                        </li>
+                        <li class="flex items-start gap-4 p-4">
+                            <span class="pt-0.5 font-serif text-2xl leading-none text-brand-green">3</span>
+                            <p class="pt-1 text-xs leading-relaxed text-gray-700">Approved announcements appear on the site.</p>
+                        </li>
+                    </ol>
                 </div>
-
             </div>
         </form>
     </div>
 
-    <script>
-        
-
-        function saveDraft() {
-            const title = document.getElementById('title').value;
-            if (!title.trim()) {
-                showMessage("Please enter at least a title to save a draft.", true);
-                return;
-            }
-            showMessage("Draft saved.");
-        }
-
-        function showMessage(msg, isError = false) {
-            const status = document.getElementById('statusMessage');
-            status.textContent = msg;
-            status.classList.remove('hidden', 'bg-green-50', 'text-green-800', 'border-green-200', 'bg-red-50', 'text-red-800', 'border-red-200');
-            
-            if (isError) {
-                status.classList.add('bg-red-50', 'text-red-800', 'border-red-200');
-            } else {
-                status.classList.add('bg-green-50', 'text-green-800', 'border-green-200');
-            }
-        }
-    </script>
 </body>
 </html>
