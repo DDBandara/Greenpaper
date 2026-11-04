@@ -1,3 +1,21 @@
+<?php
+session_start();
+
+if (empty($_SESSION['user_id'])) {
+    header('Location: /newsdesk1.0/login.php');
+    exit();
+}
+
+if (empty($_SESSION['announcement_csrf'])) {
+    $_SESSION['announcement_csrf'] = bin2hex(random_bytes(32));
+}
+?>
+<?php if (!empty($_SESSION['announcement_notice'])): ?>
+    <div class="mb-6 p-4 text-sm border">
+        <?= htmlspecialchars($_SESSION['announcement_notice'], ENT_QUOTES, 'UTF-8') ?>
+    </div>
+    <?php unset($_SESSION['announcement_notice']); ?>
+<?php endif; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,8 +75,21 @@
     </style>
 </head>
 <body class="min-h-screen px-4 py-8 md:px-12 md:py-14 lg:px-20">
+    
 
     <div class="max-w-6xl mx-auto">
+        <header class="topbar">
+            <h2 class="logo">Green Paper</h2>
+            <nav>
+                <a class="active" href="<?= BASE_URL ?>/admin_page.php">Overview</a>
+                <a href="<?= BASE_URL ?>/admin/admin_articles.php">Articles</a>
+                <a href="<?= BASE_URL ?>/admin/announcements.php">Announcements</a>
+                <a href="<?= BASE_URL ?>/admin/comments.php">Comments</a>
+                <a href="<?= BASE_URL ?>/admin/users.php">Users</a>
+                <a href="<?= BASE_URL ?>/admin/reports.php">Reports</a>
+            </nav>
+            <div class="user">Hi <?= safe($_SESSION['name']) ?> <a href="<?= BASE_URL ?>/logout.php">Log Out</a></div>
+        </header>
         
         <div id="statusMessage" class="hidden mb-6 p-4 text-sm rounded-none border"></div>
 
@@ -68,7 +99,10 @@
             <p class="text-base text-gray-600 font-normal">An admin reviews every submission before it is published.</p>
         </header>
 
-        <form id="announcementForm" class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12" onsubmit="handleFormSubmit(event)">
+        <form method="post" action="announcement_submit.php" id="announcementForm"
+      class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+      <input type="hidden" name="csrf"
+       value="<?= htmlspecialchars($_SESSION['announcement_csrf'], ENT_QUOTES, 'UTF-8') ?>">
             
             <div class="lg:col-span-8 flex flex-col gap-6">
                 
@@ -145,19 +179,7 @@
     </div>
 
     <script>
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const title = document.getElementById('title').value;
-            const body = document.getElementById('body').value;
-
-            if (!title.trim() || !body.trim()) {
-                showMessage("Please fill in both title and description.", true);
-                return;
-            }
-
-            showMessage("Announcement submitted successfully for admin review!");
-            document.getElementById('announcementForm').reset();
-        }
+        
 
         function saveDraft() {
             const title = document.getElementById('title').value;
