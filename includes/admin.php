@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/functions.php';
 
@@ -49,10 +51,13 @@ function plural($n, $word) {
 
 function adminHeader($title, $active) {
     $items = [
-        'overview' => ['Overview', '/admin_page.php'],
-        'comments' => ['Comments', '/admin/comments.php'],
-        'users'    => ['Users', '/admin/users.php'],
-    ];
+    'overview'     => ['Overview', '/admin_page.php'],
+    'articles'     => ['Articles', '/admin/admin_articles.php'],
+    'announcements' => ['Announcements', '/admin/announcements.php'],
+    'comments'     => ['Comments', '/admin/comments.php'],
+    'users'        => ['Users', '/admin/users.php'],
+    'reports'      => ['Reports', '/admin/reports.php'],
+];
     $message = $_SESSION['admin_msg'] ?? '';
     unset($_SESSION['admin_msg']);
     ?>
@@ -66,19 +71,22 @@ function adminHeader($title, $active) {
 <link rel="stylesheet" href="<?= BASE_URL ?>/admin.css">
 </head>
 <body>
-<header class="admin-bar">
-    <div class="admin-bar-box">
-        <a class="admin-logo" href="<?= BASE_URL ?>/index.php">Green Paper</a>
-        <span class="admin-tag">Admin</span>
-        <nav class="admin-menu">
-            <?php foreach ($items as $key => $item): ?>
-                <a href="<?= BASE_URL . $item[1] ?>"<?= $key === $active ? ' class="active"' : '' ?>><?= $item[0] ?></a>
-            <?php endforeach; ?>
-        </nav>
-        <div class="admin-user">
-            <span>Hi, <?= safe($_SESSION['name'] ?? '') ?></span>
-            <a href="<?= BASE_URL ?>/logout.php">Log out</a>
-        </div>
+<header class="topbar">
+    <h2 class="logo">Green Paper</h2>
+
+    <nav>
+        <?php foreach ($items as $key => $item): ?>
+            <a
+                href="<?= BASE_URL . $item[1] ?>"
+                <?= $key === $active ? 'class="active"' : '' ?>>
+                <?= safe($item[0]) ?>
+            </a>
+        <?php endforeach; ?>
+    </nav>
+
+    <div class="user">
+        Hi <?= safe($_SESSION['name'] ?? '') ?>
+        <a href="<?= BASE_URL ?>/logout.php">Log Out</a>
     </div>
 </header>
 <main class="admin-wrap">

@@ -6,6 +6,7 @@ if (!defined('BASE_URL')) {
 }
 
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../includes/admin.php';
 
 if (($_SESSION['role'] ?? '') !== 'admin') {
     header('Location: ' . BASE_URL . '/login.php');
@@ -119,7 +120,10 @@ try {
 } catch (mysqli_sql_exception $error) {
     $loadError = 'Articles could not be loaded. Check the database connection and article table.';
 }
+
+adminHeader('Articles', 'articles');
 ?>
+<link rel="stylesheet" href="<?= BASE_URL ?>/admin/admin.css">
 <!doctype html>
 <html lang="en">
 
@@ -314,10 +318,6 @@ try {
 </head>
 
 <body>
-    <header>
-        <a href="<?= h(BASE_URL) ?>/admin_page.php"><strong>Green Paper</strong></a>
-        <a href="<?= h(BASE_URL) ?>/logout.php">Log out</a>
-    </header>
     <main>
         <h1>Manage articles</h1>
         <p class="intro">Review pending submissions and see the status of every article.</p>

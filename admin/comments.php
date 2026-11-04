@@ -56,6 +56,8 @@ $all = $counts['visible'] + $counts['hidden'];
 
 adminHeader('Comments', 'comments');
 ?>
+<link rel="stylesheet" href="<?= BASE_URL ?>/admin/admin.css">
+
 
 <div class="page-top">
     <span class="page-label">Comments &bull; <?= $all ?></span>

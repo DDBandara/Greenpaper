@@ -14,7 +14,9 @@ if (empty($_SESSION['announcement_csrf'])) {
 
 $notice = $_SESSION['announcement_notice'] ?? '';
 unset($_SESSION['announcement_notice']);
+
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>

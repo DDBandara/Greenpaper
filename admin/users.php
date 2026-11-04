@@ -59,7 +59,7 @@ $admins = (int)$counts['admins'];
 
 adminHeader('Users', 'users');
 ?>
-
+<link rel="stylesheet" href="<?= BASE_URL ?>/admin/admin.css">
 <div class="page-top">
     <span class="page-label">Users &bull; <?= $total ?></span>
     <span class="page-note"><?= plural($admins, 'admin') ?> &bull; <?= plural($total - $admins, 'user') ?></span>
