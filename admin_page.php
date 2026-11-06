@@ -360,9 +360,7 @@ require __DIR__ . '/includes/admin_topbar.php';
                         <div class="card-head"><h2>Quick actions</h2></div>
                         <ul class="action">
                             <li><a href="<?= BASE_URL ?>/admin/article_form.php">Write a new article<span>&rarr;</span></a></li>
-                            <li><a href="<?= BASE_URL ?>/admin/categories.php">Manage categories<span>&rarr;</span></a></li>
-                            <li><a href="<?= BASE_URL ?>/admin/announcements.php">Announcements<span>&rarr;</span></a></li>
-                            <li><a href="<?= BASE_URL ?>/admin/reports.php">Readership reports<span>&rarr;</span></a></li>
+                            <li><a href="<?= BASE_URL ?>/submit_announcement.php">Announcements<span>&rarr;</span></a></li>
                         </ul>
                     </section>
                 </div>

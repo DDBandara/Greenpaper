@@ -2,6 +2,9 @@
 session_start();
 
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/admin.php';
+adminHeader('Submit an Announcement', 'announcements');
+require_once __DIR__ . '/config.php';
 
 if (empty($_SESSION['user_id'])) {
     header('Location: ' . BASE_URL . '/login.php');
@@ -15,11 +18,30 @@ if (empty($_SESSION['announcement_csrf'])) {
 $notice = $_SESSION['announcement_notice'] ?? '';
 unset($_SESSION['announcement_notice']);
 
+$announcements = [];
+
+$stmt = mysqli_prepare(
+    $conn,
+    'SELECT id, title, body, is_active, created_at
+     FROM announcements
+     ORDER BY created_at DESC'
+);
+
+if (!$stmt) {
+    die('Could not prepare the announcements query.');
+}
+
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $announcements[] = $row;
+}
+
+mysqli_stmt_close($stmt);
 ?>
 
-<!doctype html>
-<html lang="en">
-<head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Submit an Announcement</title>
@@ -28,7 +50,7 @@ unset($_SESSION['announcement_notice']);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="<?= safe(BASE_URL) ?>/admin/admin.css">
     <script>
         tailwind.config = {
             theme: {
@@ -64,9 +86,8 @@ unset($_SESSION['announcement_notice']);
             box-shadow: 0 0 0 1px #1b6b3e;
         }
     </style>
-</head>
-<body class="min-h-screen px-4 py-8 md:px-12 md:py-14 lg:px-20">
 
+    <link rel="stylesheet" href="<?= safe(BASE_URL) ?>/admin/admin.css">
     <div class="max-w-6xl mx-auto">
         <div class="mb-8">
             <a href="<?= safe(BASE_URL) ?>/index.php"
@@ -165,5 +186,62 @@ unset($_SESSION['announcement_notice']);
         </form>
     </div>
 
-</body>
-</html>
+    <section class="mt-12">
+    <h2 class="mb-5 font-serif text-2xl text-gray-900">
+        Announcements
+    </h2>
+
+    <?php if (empty($announcements)): ?>
+        <p class="text-gray-600">There are no announcements yet.</p>
+    <?php else: ?>
+        <div class="space-y-4">
+            <?php foreach ($announcements as $announcement): ?>
+                <article class="border border-brand-border bg-[#fbfbfa] p-5">
+                    <h3 class="mb-2 font-serif text-xl text-gray-900">
+                        <?= safe($announcement['title']) ?>
+                    </h3>
+
+                    <p class="whitespace-pre-line text-gray-700">
+                        <?= safe($announcement['body']) ?>
+                    </p>
+
+                    <time class="mt-3 block text-sm text-gray-500">
+                        <?= safe(date('d M Y', strtotime($announcement['created_at']))) ?>
+                    </time>
+
+                    <p class="mt-2 text-sm">
+                        Status:
+                        <strong>
+                            <?= (int)$announcement['is_active'] === 1 ? 'Published' : 'Pending' ?>
+                        </strong>
+                    </p>
+
+                    <div class="actions mt-4">
+                        <?php if ((int)$announcement['is_active'] === 0): ?>
+                            <form method="post"
+                                  action="<?= safe(BASE_URL) ?>/admin/delete_announcement.php">
+                                <input type="hidden" name="csrf"
+                                       value="<?= safe($_SESSION['csrf']) ?>">
+                                <input type="hidden" name="id"
+                                       value="<?= (int)$announcement['id'] ?>">
+                                <input type="hidden" name="action" value="approve">
+                                <button type="submit">Approve</button>
+                            </form>
+                        <?php endif; ?>
+
+                        <form method="post"
+                              action="<?= safe(BASE_URL) ?>/admin/delete_announcement.php"
+                              onsubmit="return confirm('Delete this announcement?');">
+                            <input type="hidden" name="csrf"
+                                   value="<?= safe($_SESSION['csrf']) ?>">
+                            <input type="hidden" name="id"
+                                   value="<?= (int)$announcement['id'] ?>">
+                            <input type="hidden" name="action" value="delete">
+                            <button class="reject" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</section>

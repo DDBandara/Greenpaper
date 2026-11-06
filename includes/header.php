@@ -58,7 +58,7 @@ $cat = ($page === 'category.php') ? ($_GET['name'] ?? '') : '';
 
   <nav class="menu">
     <div class="menu-box">
-      <a href="<?= BASE_URL ?>/index.php"<?= active($page === 'index.php') ?>>Latest</a>
+      <a href="/index.php"<?= active($page === 'index.php') ?>>Latest</a>
       <a href="<?= BASE_URL ?>/category.php?name=Academic"<?= active($cat === 'Academic') ?>>Academic</a>
       <a href="<?= BASE_URL ?>/category.php?name=Events"<?= active($cat === 'Events') ?>>Events</a>
       <a href="<?= BASE_URL ?>/category.php?name=Sports"<?= active($cat === 'Sports') ?>>Sports</a>

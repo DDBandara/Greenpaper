@@ -63,3 +63,34 @@
         margin-left: 0;
     }
 }
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.actions button {
+    padding: 8px 11px;
+    border: 1px solid #1f6b3e;
+    background: #fff;
+    color: #1f6b3e;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.actions button:hover {
+    background: #1f6b3e;
+    color: #fff;
+}
+
+.actions button.reject {
+    border-color: #a32a2a;
+    color: #a32a2a;
+}
+
+.actions button.reject:hover {
+    background: #a32a2a;
+    color: #fff;
+}

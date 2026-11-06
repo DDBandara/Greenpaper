@@ -53,10 +53,10 @@ function adminHeader($title, $active) {
     $items = [
     'overview'     => ['Overview', '/admin_page.php'],
     'articles'     => ['Articles', '/admin/admin_articles.php'],
-    'announcements' => ['Announcements', '/admin/announcements.php'],
+    'announcements' => ['Announcements', '/submit_announcement.php'],
     'comments'     => ['Comments', '/admin/comments.php'],
     'users'        => ['Users', '/admin/users.php'],
-    'reports'      => ['Reports', '/admin/reports.php'],
+    'home'      => ['home', '/index.php'],
 ];
     $message = $_SESSION['admin_msg'] ?? '';
     unset($_SESSION['admin_msg']);
@@ -69,10 +69,11 @@ function adminHeader($title, $active) {
 <title><?= safe($title) ?> - Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= BASE_URL ?>/admin.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/admin/admin.css">
 </head>
 <body>
 <header class="topbar">
-    <h2 class="logo">Green Paper</h2>
+    <a class="logo" href="<?= BASE_URL ?>/index.php">Green Paper</a>
 
     <nav>
         <?php foreach ($items as $key => $item): ?>

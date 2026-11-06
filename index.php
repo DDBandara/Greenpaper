@@ -54,10 +54,7 @@ $count = getRows($conn, "SELECT COUNT(*) AS total FROM articles WHERE status = '
 $moreLeft = $count && (int)$count[0]['total'] > count($shown);
 ?>
 
-<div class="label-row">
-    <span class="label">The stories shaping today</span>
-    <span class="label-note">A closer look at what connects us on campus.</span>
-</div>
+
 
 <section class="top">
 

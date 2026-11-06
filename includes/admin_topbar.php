@@ -8,17 +8,19 @@ $activeAdminPage = $activeAdminPage ?? '';
 $adminLinks = [
     'overview'     => ['Overview', '/admin_page.php'],
     'articles'     => ['Articles', '/admin/admin_articles.php'],
-    'announcements' => ['Announcements', '/admin/announcements.php'],
+    'announcements' => ['Announcements', '/submit_announcement.php'],
     'comments'     => ['Comments', '/admin/comments.php'],
     'users'        => ['Users', '/admin/users.php'],
-    'reports'      => ['Reports', '/admin/reports.php'],
+    'home'      => ['home', '/index.php'],
 ];
 
 $adminName = htmlspecialchars($_SESSION['name'] ?? '', ENT_QUOTES, 'UTF-8');
 ?>
 
 <header class="topbar">
-    <h2 class="logo">Green Paper</h2>
+    <a href="<?= htmlspecialchars(BASE_URL . '/index.php', ENT_QUOTES, 'UTF-8') ?>">
+        <h2 class="logo">Green Paper</h2>
+    </a>
     <nav>
         <?php foreach ($adminLinks as $key => $link): ?>
             <a href="<?= htmlspecialchars(BASE_URL . $link[1], ENT_QUOTES, 'UTF-8') ?>"
