@@ -41,6 +41,7 @@ foreach ($byCategory as $row) {
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Green Paper Admin</title>
         <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/png" href="<?= BASE_URL ?>/uploads/favicon.png">
         <style>
             :root{
                 --green:#1f6b3e;
@@ -316,14 +317,14 @@ require __DIR__ . '/includes/admin_topbar.php';
             <div class="layout">
                 <div class="col-left">
                     <section class="card">
-                        <div class="card-head"><h2>Waiting for approval</h2><a href="<?= BASE_URL ?>/admin/pending.php">Review all</a></div>
+                        <div class="card-head"><h2>Waiting for approval</h2><a href="<?= BASE_URL ?>/admin/admin_articles.php">Review all</a></div>
                         <?php foreach ($waiting as $item): ?>
                             <div class="row">
                                 <div>
                                     <h3><a href="<?= storyLink($item['id']) ?>"><?= safe($item['title']) ?></a></h3>
                                     <small>By <?= safe($item['author']) ?> &bull; <?= safe($item['category']) ?> &bull; <?= showDate($item['created_at']) ?></small>
                                 </div>
-                                <a class="btn" href="<?= BASE_URL ?>/admin/pending.php">Review</a>
+                                <a class="btn" href="<?= BASE_URL ?>/admin/admin_articles.php">Review</a>
                             </div>
                         <?php endforeach; ?>
                         <?php if (!$waiting): ?>

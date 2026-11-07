@@ -58,13 +58,15 @@ $moreLeft = $count && (int)$count[0]['total'] > count($shown);
 
 <section class="top">
 
-    <article class="main-story">
+    <article class="main-story<?= $main ? ' hero' : '' ?>">
         <?php if ($main): ?>
-            <?= picture($main, 'pic-wide') ?>
-            <div class="label label-small"><?= safe($main['category']) ?> <i>&middot;</i> Featured</div>
-            <h1 class="main-title"><a href="<?= storyLink($main['id']) ?>"><?= safe($main['title']) ?></a></h1>
-            <p class="main-text"><?= safe($main['summary']) ?></p>
-            <div class="small">By <?= safe($main['author']) ?> <i>&middot;</i> <?= showDate($main['published_at']) ?></div>
+            <?= picture($main, 'pic-hero') ?>
+            <div class="hero-body">
+                <div class="label label-small"><?= safe($main['category']) ?> <i>&middot;</i> Featured</div>
+                <h1 class="main-title"><a href="<?= storyLink($main['id']) ?>"><?= safe($main['title']) ?></a></h1>
+                <p class="main-text"><?= safe($main['summary']) ?></p>
+                <div class="small">By <?= safe($main['author']) ?> <i>&middot;</i> <?= showDate($main['published_at']) ?></div>
+            </div>
         <?php else: ?>
             <p class="main-text">No stories have been published yet.</p>
         <?php endif; ?>

@@ -1,8 +1,4 @@
 (function () {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        return;
-    }
-
     var selector = '.main-story, .story, .news-row, .quick-item, .side-box, .category-head, .comment, .stat, .panel, .article-main > *';
     var seen = new WeakSet();
     var counter = 0;

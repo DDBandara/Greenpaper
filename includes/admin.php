@@ -57,6 +57,7 @@ function adminHeader($title, $active) {
     'comments'     => ['Comments', '/admin/comments.php'],
     'users'        => ['Users', '/admin/users.php'],
     'home'      => ['home', '/index.php'],
+    
 ];
     $message = $_SESSION['admin_msg'] ?? '';
     unset($_SESSION['admin_msg']);
@@ -69,6 +70,7 @@ function adminHeader($title, $active) {
 <title><?= safe($title) ?> - Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= BASE_URL ?>/admin.css">
+<link rel="icon" type="image/png" href="<?= BASE_URL ?>/uploads/favicon.png">
 <link rel="stylesheet" href="<?= BASE_URL ?>/admin/admin.css">
 </head>
 <body>

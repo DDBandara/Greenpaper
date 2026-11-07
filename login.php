@@ -104,13 +104,20 @@ require_once __DIR__ . '/includes/header.php';
         <?= renderLatestNewsStack($leftNews, 'left') ?>
 
         <div class="auth-form-column">
+            <div class="auth-tabs" role="tablist">
+                <button type="button" class="auth-tab" role="tab" data-target="login-form" aria-selected="<?= $activeForm === 'register' ? 'false' : 'true' ?>">Log in</button>
+                <button type="button" class="auth-tab" role="tab" data-target="register-form" aria-selected="<?= $activeForm === 'register' ? 'true' : 'false' ?>">Create account</button>
+            </div>
             <section class="form-box auth-form-box <?= isActiveForm('login', $activeForm) ?>" id="login-form">
                 <form action="<?= BASE_URL ?>/login_register.php" method="post">
                     <h2>Welcome back</h2>
                     <?= showSuccess($success) ?>
                     <?= showError($errors['login']) ?>
                     <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
-                    <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
+                    <div class="pw-wrap">
+                        <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
+                        <button type="button" class="pw-toggle" aria-label="Show password">Show</button>
+                    </div>
                     <button type="submit" name="login">Log in</button>
                     <p>New to Green Paper? <a href="#register-form" onclick="showform('register-form'); return false;">Create an account</a></p>
                 </form>
@@ -122,7 +129,12 @@ require_once __DIR__ . '/includes/header.php';
                     <?= showError($errors['register']) ?>
                     <input type="text" name="name" placeholder="Full name" autocomplete="name" required>
                     <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
-                    <input type="password" name="password" placeholder="Password (at least 8 characters)" autocomplete="new-password" minlength="8" required>
+                    <div class="pw-wrap">
+                        <input type="password" name="password" id="register-password" placeholder="Password (at least 8 characters)" autocomplete="new-password" minlength="8" required>
+                        <button type="button" class="pw-toggle" aria-label="Show password">Show</button>
+                    </div>
+                    <div class="pw-meter" id="pwMeter" data-level="0" aria-hidden="true"><span></span></div>
+                    <p class="pw-hint" id="pwHint">Use 8 or more characters</p>
 
                     <p class="auth-field-label">Choose the categories you want to follow</p>
                     <div class="auth-category-options">
@@ -145,4 +157,69 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 <script src="<?= BASE_URL ?>/script.js"></script>
+<script>
+(function () {
+    var tabs = document.querySelectorAll('.auth-tab');
+    var sync = function () {
+        tabs.forEach(function (tab) {
+            var on = document.getElementById(tab.dataset.target).classList.contains('active');
+            tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+    };
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () { showform(tab.dataset.target); });
+    });
+    document.querySelectorAll('.form-box').forEach(function (box) {
+        new MutationObserver(sync).observe(box, {attributes: true, attributeFilter: ['class']});
+    });
+    sync();
+
+    document.querySelectorAll('.pw-toggle').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var input = button.previousElementSibling;
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            button.textContent = show ? 'Hide' : 'Show';
+            button.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        });
+    });
+
+    var password = document.getElementById('register-password');
+    var meter = document.getElementById('pwMeter');
+    var hint = document.getElementById('pwHint');
+    if (password && meter && hint) {
+        var bar = meter.firstElementChild;
+        password.addEventListener('input', function () {
+            var value = password.value;
+            var score = 0;
+            if (value.length >= 8) { score++; }
+            if (value.length >= 12) { score++; }
+            if (/[a-z]/.test(value) && /[A-Z]/.test(value)) { score++; }
+            if (/\d/.test(value)) { score++; }
+            if (/[^A-Za-z0-9]/.test(value)) { score++; }
+            var level = value.length === 0 ? 0 : (score >= 4 ? 3 : (score >= 2 ? 2 : 1));
+            meter.setAttribute('data-level', level);
+            bar.style.width = (value.length === 0 ? 0 : Math.max(12, score * 20)) + '%';
+            hint.textContent = ['Use 8 or more characters', 'Weak: add more characters or numbers', 'Fair: add capitals or symbols', 'Strong password'][level];
+        });
+    }
+
+    document.querySelectorAll('.auth-form-box form').forEach(function (form) {
+        var button = form.querySelector('button[type="submit"]');
+        var label = button.textContent;
+        form.addEventListener('submit', function (event) {
+            if (form.dataset.sent) {
+                event.preventDefault();
+                return;
+            }
+            form.dataset.sent = '1';
+            button.textContent = 'Please wait...';
+        });
+        window.addEventListener('pageshow', function () {
+            delete form.dataset.sent;
+            button.textContent = label;
+        });
+    });
+})();
+</script>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

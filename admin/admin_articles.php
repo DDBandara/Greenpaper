@@ -137,6 +137,7 @@ adminHeader('Articles', 'articles');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/uploads/favicon.png">
     <title>Manage articles - Green Paper</title>
     <style>
         :root {

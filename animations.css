@@ -57,15 +57,12 @@ body {
     transform: scaleX(1);
 }
 
-.reveal {
+.reveal:not(.visible) {
     opacity: 0;
     transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transition-delay: var(--d, 0ms);
 }
 .reveal.visible {
-    opacity: 1;
-    transform: none;
+    animation: fadeUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) backwards;
 }
 
 .quick-item,
@@ -160,17 +157,4 @@ button:active,
     background: var(--accent);
     transform: scaleX(0);
     transform-origin: left;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation: none !important;
-        transition: none !important;
-    }
-    .reveal {
-        opacity: 1;
-        transform: none;
-    }
 }
