@@ -64,6 +64,8 @@ require_once __DIR__ . '/includes/header.php';
             <label for="image">Image (optional)</label>
             <input type="file" id="image" name="image" class="upload" accept="image/png, image/jpeg, image/webp">
             <small>JPG, PNG or WebP, max 2 MB</small>
+            <img id="preview" class="preview" alt="Selected image preview" hidden>
+            <p id="imageNote" class="counter over" hidden></p>
 
             <button type="submit" name="action" value="submit" class="primary">Submit for approval</button>
             <button type="submit" name="action" value="draft" class="secondary" formnovalidate>Save draft</button>
@@ -77,5 +79,54 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     </form>
 </div>
+
+<script>
+(function () {
+    var limits = {title: 200, summary: 300};
+    Object.keys(limits).forEach(function (id) {
+        var field = document.getElementById(id);
+        var out = document.createElement('div');
+        out.className = 'counter';
+        field.insertAdjacentElement('afterend', out);
+        var update = function () {
+            var count = field.value.length;
+            out.textContent = count + ' / ' + limits[id];
+            out.classList.toggle('over', count > limits[id]);
+        };
+        field.addEventListener('input', update);
+        update();
+    });
+
+    var body = document.getElementById('body');
+    var bodyOut = document.createElement('div');
+    bodyOut.className = 'counter';
+    body.insertAdjacentElement('afterend', bodyOut);
+    var updateBody = function () {
+        var count = body.value.trim().length;
+        bodyOut.textContent = count + ' characters (at least 50 to submit)';
+    };
+    body.addEventListener('input', updateBody);
+    updateBody();
+
+    var input = document.getElementById('image');
+    var preview = document.getElementById('preview');
+    var note = document.getElementById('imageNote');
+    input.addEventListener('change', function () {
+        var file = input.files[0];
+        note.hidden = true;
+        preview.hidden = true;
+        if (!file) { return; }
+        var okType = ['image/jpeg', 'image/png', 'image/webp'].indexOf(file.type) !== -1;
+        if (!okType || file.size > 2 * 1024 * 1024) {
+            note.textContent = !okType ? 'Choose a JPG, PNG or WebP image.' : 'The image must be 2 MB or smaller.';
+            note.hidden = false;
+            input.value = '';
+            return;
+        }
+        preview.src = URL.createObjectURL(file);
+        preview.hidden = false;
+    });
+})();
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

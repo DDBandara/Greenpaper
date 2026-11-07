@@ -109,7 +109,14 @@ require_once __DIR__ . '/includes/header.php';
             <div class="note">This article is not published yet. Its status is <strong><?= safe($article['status']) ?></strong>.</div>
         <?php endif; ?>
 
-        <div class="label"><?= safe($article['category']) ?></div>
+        <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="<?= BASE_URL ?>/index.php">Home</a>
+            <i>&rsaquo;</i>
+            <a href="<?= BASE_URL ?>/category.php?name=<?= urlencode($article['category']) ?>"><?= safe($article['category']) ?></a>
+            <i>&rsaquo;</i>
+            <span><?= safe(mb_strimwidth($article['title'], 0, 48, '...')) ?></span>
+        </nav>
+
         <h1 class="article-title"><?= safe($article['title']) ?></h1>
         <p class="article-sub"><?= safe($article['summary']) ?></p>
 
@@ -135,10 +142,10 @@ require_once __DIR__ . '/includes/header.php';
 
         <?php if (!empty($article['image'])): ?>
             <div class="article-image">
-                <img src="<?= safe(BASE_URL . '/uploads/' . $article['image']) ?>" alt="<?= safe($article['title']) ?>">
+                <img src="<?= safe(BASE_URL . '/uploads/' . $article['image']) ?>" alt="<?= safe($article['title']) ?>" decoding="async">
             </div>
         <?php else: ?>
-            <div class="pic pic-wide"><span>IMAGE</span></div>
+            <div class="pic pic-wide pic-tone-<?= toneFor($article['category']) ?>"><span><?= safe($article['category']) ?></span></div>
         <?php endif; ?>
 
         <div class="article-text">
@@ -170,8 +177,11 @@ require_once __DIR__ . '/includes/header.php';
 
             <?php foreach ($comments as $comment): ?>
                 <div class="comment">
-                    <div class="comment-name"><?= safe($comment['name']) ?> <span><?= timeAgo($comment['created_at']) ?></span></div>
-                    <div class="comment-text"><?= nl2br(safe($comment['body'])) ?></div>
+                    <div class="comment-avatar" aria-hidden="true"><?= safe(initials($comment['name'])) ?></div>
+                    <div class="comment-content">
+                        <div class="comment-name"><?= safe($comment['name']) ?> <span><?= timeAgo($comment['created_at']) ?></span></div>
+                        <div class="comment-text"><?= nl2br(safe($comment['body'])) ?></div>
+                    </div>
                 </div>
             <?php endforeach; ?>
         </section>

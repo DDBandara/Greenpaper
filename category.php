@@ -66,6 +66,7 @@ if ($loggedIn) {
     $following = $stmt->get_result()->num_rows > 0;
 }
 
+$notices = getNotices($conn);
 $from = $total ? $offset + 1 : 0;
 $to = min($offset + $perPage, $total);
 $pageUrl = BASE_URL . '/category.php?name=' . urlencode($category['name']) . '&page=';
@@ -131,6 +132,7 @@ require_once __DIR__ . '/includes/header.php';
             <a class="follow-btn" href="<?= BASE_URL ?>/login.php">+ Follow this category</a>
         <?php endif; ?>
 
+        <?= announcementsBox($notices, 'category-announcements') ?>
         <div class="other-box">
             <h3>Other categories</h3>
             <ul>

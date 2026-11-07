@@ -58,11 +58,14 @@ $cat = ($page === 'category.php') ? ($_GET['name'] ?? '') : '';
 
   <nav class="menu">
     <div class="menu-box">
+      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="menuLinks">Menu</button>
+      <div class="menu-links" id="menuLinks">
       <a href="/index.php"<?= active($page === 'index.php') ?>>Latest</a>
       <a href="<?= BASE_URL ?>/category.php?name=Academic"<?= active($cat === 'Academic') ?>>Academic</a>
       <a href="<?= BASE_URL ?>/category.php?name=Events"<?= active($cat === 'Events') ?>>Events</a>
       <a href="<?= BASE_URL ?>/category.php?name=Sports"<?= active($cat === 'Sports') ?>>Sports</a>
       <a href="<?= BASE_URL ?>/category.php?name=General"<?= active($cat === 'General') ?>>General</a>
+      </div>
 
       <form class="search-box" action="<?= BASE_URL ?>/search.php" method="get">
         <label>
@@ -76,5 +79,16 @@ $cat = ($page === 'category.php') ? ($_GET['name'] ?? '') : '';
     </div>
   </nav>
 </header>
+<script>
+(function () {
+  var toggle = document.querySelector('.menu-toggle');
+  var links = document.getElementById('menuLinks');
+  if (!toggle || !links) { return; }
+  toggle.addEventListener('click', function () {
+    var open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
 
 <main class="wrap">

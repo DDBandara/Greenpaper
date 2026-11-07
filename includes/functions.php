@@ -1,4 +1,3 @@
-
 <?php
 if (!defined('BASE_URL')) {
     define('BASE_URL', '/newsdesk1.0');
@@ -27,12 +26,26 @@ function getRows($conn, $sql) {
     return $result ? $result->fetch_all(MYSQLI_ASSOC) : null;
 }
 
+function toneFor($name) {
+    return abs(crc32((string)$name)) % 5;
+}
+
+function initials($name) {
+    $parts = preg_split('/\s+/u', trim((string)$name), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    $out = '';
+    foreach (array_slice($parts, 0, 2) as $part) {
+        $out .= mb_strtoupper(mb_substr($part, 0, 1));
+    }
+    return $out !== '' ? $out : 'U';
+}
+
 function picture($story, $class) {
     $url = storyLink($story['id']);
     if (!empty($story['image'])) {
-        return '<a href="' . $url . '" class="pic ' . $class . '"><img src="' . safe(BASE_URL . '/uploads/' . $story['image']) . '" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></a>';
+        return '<a href="' . $url . '" class="pic ' . $class . '"><img src="' . safe(BASE_URL . '/uploads/' . $story['image']) . '" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></a>';
     }
-    return '<a href="' . $url . '" class="pic ' . $class . '"><span>IMAGE</span></a>';
+    $label = trim((string)($story['category'] ?? ''));
+    return '<a href="' . $url . '" class="pic ' . $class . ' pic-tone-' . toneFor($label) . '"><span>' . safe($label !== '' ? $label : 'News') . '</span></a>';
 }
 
 function newsRow($story) {
@@ -57,3 +70,27 @@ function newsRow($story) {
     
 }
 
+function getNotices($conn, $limit = 3) {
+    $limit = max(1, (int)$limit);
+    return getRows($conn, "SELECT title, created_at FROM announcements WHERE is_active = 1 ORDER BY created_at DESC LIMIT $limit") ?? [];
+}
+
+function announcementsBox($notices, $extraClass = '') {
+    ob_start(); ?>
+    <section class="side-box<?= $extraClass ? ' ' . safe($extraClass) : '' ?>">
+        <h2 class="side-heading">Announcements <span class="live">Live</span></h2>
+        <ul class="notice-list">
+            <?php foreach ($notices as $notice): ?>
+                <li>
+                    <span class="notice-date"><?= strtoupper(date('d M', strtotime($notice['created_at']))) ?></span>
+                    <span class="notice-title"><?= safe($notice['title']) ?></span>
+                </li>
+            <?php endforeach; ?>
+            <?php if (!$notices): ?>
+                <li><span class="notice-title">No announcements right now.</span></li>
+            <?php endif; ?>
+        </ul>
+    </section>
+    <?php
+    return ob_get_clean();
+}

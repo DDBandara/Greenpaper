@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/includes/functions.php';
 $pageTitle = 'Search - Green Paper';
 require_once __DIR__ . '/includes/header.php';
 
@@ -14,7 +15,7 @@ if ($q !== '') {
     $like = '%' . addcslashes($q, '%_\\') . '%';
 
     $stmt = $conn->prepare(
-        "SELECT a.id, a.title, a.summary, a.body, a.published_at, c.name AS category
+        "SELECT a.id, a.title, a.summary, a.body, a.image, a.published_at, c.name AS category
          FROM articles a
          JOIN categories c ON c.id = a.category_id
          WHERE a.status = 'approved'
@@ -59,7 +60,7 @@ if ($q !== '') {
             $blurb = $r['summary'] !== null && $r['summary'] !== '' ? $r['summary'] : mb_substr(strip_tags($r['body']), 0, 160) . '...';
         ?>
             <article class="news-row">
-                <a href="<?= BASE_URL ?>/article.php?id=<?= (int)$r['id'] ?>" class="pic pic-row"><span>IMAGE</span></a>
+                <?= picture($r, 'pic-row') ?>
                 <div class="news-body">
                     <div class="label label-small"><?= safe($r['category']) ?></div>
                     <h3 class="news-title"><a href="<?= BASE_URL ?>/article.php?id=<?= (int)$r['id'] ?>"><?= safe($r['title']) ?></a></h3>

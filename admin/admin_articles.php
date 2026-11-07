@@ -7,6 +7,7 @@ if (!defined('BASE_URL')) {
 
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/admin.php';
+require_once __DIR__ . '/../includes/upload.php';
 
 if (($_SESSION['role'] ?? '') !== 'admin') {
     header('Location: ' . BASE_URL . '/login.php');
@@ -36,6 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['articles_message'] = ['error', 'That action could not be completed.'];
         } elseif ($action === 'delete') {
             try {
+                $stmt = $conn->prepare('SELECT image FROM articles WHERE id = ?');
+                $stmt->bind_param('i', $articleId);
+                $stmt->execute();
+                $imageName = $stmt->get_result()->fetch_assoc()['image'] ?? null;
+
                 $conn->begin_transaction();
 
                 $stmt = $conn->prepare('DELETE FROM comments WHERE article_id = ?');
@@ -55,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 $conn->commit();
+                removeImage($imageName);
                 $_SESSION['articles_message'] = ['success', 'Article deleted.'];
             } catch (Throwable $error) {
                 $conn->rollback();
@@ -243,12 +250,29 @@ adminHeader('Articles', 'articles');
         }
 
         .status {
-            display: inline-block;
-            padding: 3px 9px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
             border-radius: 20px;
             background: #ecefea;
+            color: #4a4a44;
             font-size: 12px;
+            font-weight: 600;
             text-transform: capitalize;
+        }
+
+        .status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .status.draft {
+            background: #e8e8e3;
+            color: #4a4a44;
         }
 
         .status.pending {
@@ -346,7 +370,7 @@ adminHeader('Articles', 'articles');
                                 <td class="title"><a href="<?= h(BASE_URL) ?>/article.php?id=<?= (int)$article['id'] ?>"><?= h($article['title']) ?></a></td>
                                 <td><?= h($article['author'] ?? 'Unknown') ?></td>
                                 <td><?= h($article['category'] ?? 'Uncategorized') ?></td>
-                                <td><span class="status <?= h($article['status']) ?>"><?= h($article['status']) ?></span></td>
+                                <td><span class="status <?= h($article['status']) ?>"><?= h($article['status'] === 'approved' ? 'published' : $article['status']) ?></span></td>
                                 <td class="sub"><?= h($article['created_at'] ?? '') ?></td>
                                 <td>
                                     <div class="actions">

@@ -40,7 +40,7 @@ $second = array_slice($others, 0, 2);
 $more   = array_slice($others, 2, 3);
 $quick  = array_slice($others, 5, 4);
 
-$notices = getRows($conn, "SELECT title, created_at FROM announcements WHERE is_active = 1 ORDER BY created_at DESC LIMIT 3") ?? [];
+$notices = getNotices($conn);
 $cats    = getRows($conn, "SELECT name FROM categories ORDER BY name") ?? [];
 
 $shown = [];
@@ -82,20 +82,7 @@ $moreLeft = $count && (int)$count[0]['total'] > count($shown);
     </div>
 
     <aside class="side">
-        <section class="side-box">
-            <h2 class="side-heading">Announcements <span class="live">Live</span></h2>
-            <ul class="notice-list">
-                <?php foreach ($notices as $notice): ?>
-                    <li>
-                        <span class="notice-date"><?= strtoupper(date('d M', strtotime($notice['created_at']))) ?></span>
-                        <span class="notice-title"><?= safe($notice['title']) ?></span>
-                    </li>
-                <?php endforeach; ?>
-                <?php if (!$notices): ?>
-                    <li><span class="notice-title">No announcements right now.</span></li>
-                <?php endif; ?>
-            </ul>
-        </section>
+        <?= announcementsBox($notices) ?>
 
         <section class="side-box">
             <h2 class="side-heading">Categories</h2>

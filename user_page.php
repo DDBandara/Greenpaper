@@ -268,6 +268,8 @@ $statusClasses = [
                                 </div>
                                 <?php if ($status === 'approved'): ?>
                                     <a href="<?= safe(BASE_URL) ?>/article.php?id=<?= (int) $article['id'] ?>" class="self-end border border-brand-border bg-white px-3 py-1.5 text-xs font-semibold text-brand-dark hover:border-brand-green hover:text-brand-green sm:self-auto">View article</a>
+                                <?php else: ?>
+                                    <a href="<?= safe(BASE_URL) ?>/article.php?id=<?= (int) $article['id'] ?>" class="self-end border border-brand-border bg-white px-3 py-1.5 text-xs font-semibold text-brand-dark hover:border-brand-green hover:text-brand-green sm:self-auto">Preview</a>
                                 <?php endif; ?>
                             </article>
                         <?php endforeach; ?>
