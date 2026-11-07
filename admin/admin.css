@@ -94,3 +94,63 @@
     background: #a32a2a;
     color: #fff;
 }
+
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.theme-toggle:hover {
+    border-color: #fff;
+}
+
+.theme-toggle .sun {
+    display: none;
+}
+
+.theme-toggle .moon {
+    display: block;
+}
+
+[data-theme="dark"] .theme-toggle .sun {
+    display: block;
+}
+
+[data-theme="dark"] .theme-toggle .moon {
+    display: none;
+}
+
+[data-theme="dark"] .topbar {
+    background: #0f2c1b;
+    border-bottom: 1px solid #1f422b;
+}
+
+[data-theme="dark"] .actions button {
+    background: #171f1a;
+    border-color: #58b784;
+    color: #58b784;
+}
+
+[data-theme="dark"] .actions button:hover {
+    background: #58b784;
+    color: #0c1410;
+}
+
+[data-theme="dark"] .actions button.reject {
+    background: #171f1a;
+    border-color: #e06c64;
+    color: #f0a39e;
+}
+
+[data-theme="dark"] .actions button.reject:hover {
+    background: #e06c64;
+    color: #fff;
+}

@@ -139,6 +139,23 @@ adminHeader('Articles', 'articles');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/uploads/favicon.png">
     <title>Manage articles - Green Paper</title>
+    <script>
+    try {
+      document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') === 'light' ? 'light' : 'dark');
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var toggle = document.querySelector('.theme-toggle');
+        if (toggle) {
+            toggle.addEventListener('click', function () {
+                var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('theme', next); } catch (e) {}
+            });
+        }
+    });
+    </script>
     <style>
         :root {
             color-scheme: light;
@@ -147,6 +164,101 @@ adminHeader('Articles', 'articles');
             --line: #d8ded7;
             --green: #1f6b3e;
             --paper: #f5f6f2;
+        }
+
+        [data-theme="dark"] {
+            color-scheme: dark;
+            --ink: #e9e8e2;
+            --muted: #a8a69d;
+            --line: #2b332f;
+            --green: #58b784;
+            --paper: #121614;
+        }
+
+        [data-theme="dark"] body {
+            background: var(--paper);
+            color: var(--ink);
+        }
+
+        [data-theme="dark"] .table-wrap {
+            background: #171f1a;
+            border-color: var(--line);
+        }
+
+        [data-theme="dark"] th {
+            background: #1d2520;
+            color: var(--muted);
+            border-bottom-color: var(--line);
+        }
+
+        [data-theme="dark"] td {
+            border-bottom-color: var(--line);
+            color: var(--ink);
+        }
+
+        [data-theme="dark"] .title {
+            color: var(--ink);
+        }
+
+        [data-theme="dark"] .sub {
+            color: var(--muted);
+        }
+
+        [data-theme="dark"] .notice {
+            background: #171f1a;
+            border-color: var(--line);
+            color: var(--ink);
+        }
+
+        [data-theme="dark"] .notice.success {
+            border-left-color: var(--green);
+        }
+
+        [data-theme="dark"] .notice.error {
+            border-left-color: #d9605a;
+            background: #3a1f1d;
+            color: #f0b9b4;
+        }
+
+        [data-theme="dark"] .status.draft {
+            background: #262e29;
+            color: #c0c6c2;
+        }
+
+        [data-theme="dark"] .status.pending {
+            background: rgba(234, 179, 8, 0.16);
+            color: #fde047;
+        }
+
+        [data-theme="dark"] .status.approved {
+            background: rgba(88, 183, 132, 0.16);
+            color: #8ce4ad;
+        }
+
+        [data-theme="dark"] .status.rejected {
+            background: rgba(239, 68, 68, 0.16);
+            color: #fca5a5;
+        }
+
+        [data-theme="dark"] button {
+            background: #171f1a;
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        [data-theme="dark"] button:hover {
+            background: var(--green);
+            color: #0c1410;
+        }
+
+        [data-theme="dark"] button.reject {
+            border-color: #e06c64;
+            color: #f0a39e;
+        }
+
+        [data-theme="dark"] button.reject:hover {
+            background: #e06c64;
+            color: #fff;
         }
 
         * {

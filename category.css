@@ -22,6 +22,11 @@
     align-items: start;
 }
 
+.category-side {
+    position: sticky;
+    top: 24px;
+}
+
 .side-count {
     margin-bottom: 8px;
     text-align: right;
@@ -109,6 +114,9 @@
     .category-layout {
         grid-template-columns: 1fr;
     }
+    .category-side {
+        position: static;
+    }
     .category-head h1 {
         font-size: 38px;
     }
@@ -117,4 +125,69 @@
 .category-announcements {
     margin-bottom: 24px;
     border: 1px solid var(--line);
+}
+
+
+.trending-box {
+    margin-bottom: 24px;
+    border: 1px solid var(--line);
+}
+
+.trending-box .side-heading {
+    margin: 0;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.trending-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: trend-counter;
+}
+
+.trending-list li {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 12px 16px 12px 42px;
+    border-bottom: 1px solid var(--line);
+}
+
+.trending-list li:last-child {
+    border-bottom: none;
+}
+
+.trending-list li::before {
+    counter-increment: trend-counter;
+    content: counter(trend-counter);
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.trending-list a {
+    font-family: var(--serif);
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.trending-list a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.trending-list .small {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--muted);
 }

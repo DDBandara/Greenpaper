@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 require_once __DIR__ . '/includes/functions.php';
@@ -85,6 +85,61 @@ mysqli_stmt_close($stmt);
             border-color: #1b6b3e;
             box-shadow: 0 0 0 1px #1b6b3e;
         }
+
+        [data-theme="dark"] body {
+            background: #121614 !important;
+            color: #e9e8e2 !important;
+        }
+
+        [data-theme="dark"] .bg-\[\#fcfcf9\],
+        [data-theme="dark"] .bg-\[\#fbfbfa\],
+        [data-theme="dark"] .bg-white {
+            background-color: #171f1a !important;
+        }
+
+        [data-theme="dark"] .border-brand-border,
+        [data-theme="dark"] .border-gray-200,
+        [data-theme="dark"] .divide-gray-200 > * + * {
+            border-color: #2b332f !important;
+        }
+
+        [data-theme="dark"] .text-gray-900,
+        [data-theme="dark"] .text-gray-800,
+        [data-theme="dark"] strong {
+            color: #e9e8e2 !important;
+        }
+
+        [data-theme="dark"] .text-gray-700,
+        [data-theme="dark"] .text-gray-600,
+        [data-theme="dark"] .text-gray-500,
+        [data-theme="dark"] .text-brand-label {
+            color: #a8a69d !important;
+        }
+
+        [data-theme="dark"] .text-brand-green {
+            color: #58b784 !important;
+        }
+
+        [data-theme="dark"] ol.divide-brand-border > * + * {
+            border-color: #2b332f !important;
+        }
+
+        [data-theme="dark"] .border-b.border-brand-border {
+            border-bottom-color: #2b332f !important;
+        }
+
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] textarea {
+            background-color: #1b221e !important;
+            border-color: #2b332f !important;
+            color: #e9e8e2 !important;
+        }
+
+        [data-theme="dark"] input[type="text"]::placeholder,
+        [data-theme="dark"] textarea::placeholder {
+            color: #6b7570 !important;
+        }
+
     </style>
 
     <link rel="stylesheet" href="<?= safe(BASE_URL) ?>/admin/admin.css">

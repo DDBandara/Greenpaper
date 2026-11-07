@@ -67,11 +67,28 @@ function adminHeader($title, $active) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+try {
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') === 'light' ? 'light' : 'dark');
+} catch (e) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+}
+document.addEventListener('DOMContentLoaded', function () {
+    var toggle = document.querySelector('.theme-toggle');
+    if (toggle) {
+        toggle.addEventListener('click', function () {
+            var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) {}
+        });
+    }
+});
+</script>
 <title><?= safe($title) ?> - Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?= BASE_URL ?>/admin.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/admin.css?v=2">
 <link rel="icon" type="image/png" href="<?= BASE_URL ?>/uploads/favicon.png">
-<link rel="stylesheet" href="<?= BASE_URL ?>/admin/admin.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/admin/admin.css?v=2">
 </head>
 <body>
 <header class="topbar">
@@ -89,6 +106,10 @@ function adminHeader($title, $active) {
 
     <div class="user">
         Hi <?= safe($_SESSION['name'] ?? '') ?>
+        <button type="button" class="theme-toggle" aria-label="Switch theme">
+            <svg class="moon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            <svg class="sun" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M3 13l1.4-1.4M11.6 4.4L13 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
         <a href="<?= BASE_URL ?>/logout.php">Log Out</a>
     </div>
 </header>

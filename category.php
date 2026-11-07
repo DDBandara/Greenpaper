@@ -51,6 +51,28 @@ $stmt->bind_param('iii', $category['id'], $perPage, $offset);
 $stmt->execute();
 $stories = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
+$stmt = $conn->prepare("SELECT id, title, published_at, views
+                        FROM articles
+                        WHERE status = 'approved' AND category_id = ?
+                        ORDER BY views DESC, published_at DESC
+                        LIMIT 4");
+$stmt->bind_param('i', $category['id']);
+$stmt->execute();
+$trending = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+if (count($trending) < 2) {
+    $stmt = $conn->prepare("SELECT id, title, published_at, views
+                            FROM articles
+                            WHERE status = 'approved'
+                            ORDER BY views DESC, published_at DESC
+                            LIMIT 4");
+    $stmt->execute();
+    $trending = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $trendingTitle = 'Trending Stories';
+} else {
+    $trendingTitle = 'Trending in ' . $category['name'];
+}
+
 $others = getRows($conn, "SELECT c.name, COUNT(a.id) AS total
                           FROM categories c
                           LEFT JOIN articles a ON a.category_id = c.id AND a.status = 'approved'
@@ -130,6 +152,20 @@ require_once __DIR__ . '/includes/header.php';
             </form>
         <?php else: ?>
             <a class="follow-btn" href="<?= BASE_URL ?>/login.php">+ Follow this category</a>
+        <?php endif; ?>
+
+        <?php if (!empty($trending)): ?>
+            <div class="trending-box">
+                <h3 class="side-heading"><?= safe($trendingTitle) ?></h3>
+                <ol class="trending-list">
+                    <?php foreach ($trending as $item): ?>
+                        <li>
+                            <a href="<?= storyLink($item['id']) ?>"><?= safe($item['title']) ?></a>
+                            <span class="small"><?= showDate($item['published_at']) ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
+            </div>
         <?php endif; ?>
 
         <?= announcementsBox($notices, 'category-announcements') ?>

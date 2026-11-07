@@ -44,8 +44,7 @@ function picture($story, $class) {
     if (!empty($story['image'])) {
         return '<a href="' . $url . '" class="pic ' . $class . '"><img src="' . safe(BASE_URL . '/uploads/' . $story['image']) . '" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></a>';
     }
-    $label = trim((string)($story['category'] ?? ''));
-    return '<a href="' . $url . '" class="pic ' . $class . ' pic-tone-' . toneFor($label) . '"><span>' . safe($label !== '' ? $label : 'News') . '</span></a>';
+    return '';
 }
 
 function newsRow($story) {

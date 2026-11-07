@@ -40,6 +40,24 @@ foreach ($byCategory as $row) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Green Paper Admin</title>
+        <script>
+        try {
+          document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') === 'light' ? 'light' : 'dark');
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var toggle = document.querySelector('.theme-toggle');
+            if (toggle) {
+                toggle.addEventListener('click', function () {
+                    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    try { localStorage.setItem('theme', next); } catch (e) {}
+                });
+            }
+        });
+        </script>
+        <link rel="stylesheet" href="<?= BASE_URL ?>/admin/admin.css">
         <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
         <link rel="icon" type="image/png" href="<?= BASE_URL ?>/uploads/favicon.png">
         <style>
@@ -49,6 +67,64 @@ foreach ($byCategory as $row) {
                 --card:#fff;
                 --line:#ddd8cc;
                 --red:#a32a2a;
+            }
+            [data-theme="dark"]{
+                color-scheme: dark;
+                --green: #58b784;
+                --bg: #121614;
+                --card: #171f1a;
+                --line: #2b332f;
+                --red: #f0a39e;
+                --ink: #e9e8e2;
+                --muted: #a8a69d;
+            }
+            [data-theme="dark"] body{
+                background: var(--bg);
+                color: var(--ink);
+            }
+            [data-theme="dark"] h1,
+            [data-theme="dark"] h2,
+            [data-theme="dark"] h3,
+            [data-theme="dark"] .card h2,
+            [data-theme="dark"] .stat .num{
+                color: var(--ink);
+            }
+            [data-theme="dark"] .stat,
+            [data-theme="dark"] .card{
+                background: var(--card);
+                border-color: var(--line);
+            }
+            [data-theme="dark"] .card-head,
+            [data-theme="dark"] .row,
+            [data-theme="dark"] .pop-row,
+            [data-theme="dark"] .bar-row{
+                border-bottom-color: var(--line);
+            }
+            [data-theme="dark"] .stat .label,
+            [data-theme="dark"] .stat .note,
+            [data-theme="dark"] .eyebrow,
+            [data-theme="dark"] .date,
+            [data-theme="dark"] small,
+            [data-theme="dark"] .empty{
+                color: var(--muted);
+            }
+            [data-theme="dark"] .btn{
+                background: var(--card);
+                border-color: var(--green);
+                color: var(--green);
+            }
+            [data-theme="dark"] .btn:hover{
+                background: var(--green);
+                color: #0c1410;
+            }
+            [data-theme="dark"] .track{
+                background: #232e26;
+            }
+            [data-theme="dark"] .fill{
+                background: var(--green);
+            }
+            [data-theme="dark"] .stat .num.warn{
+                color: var(--red);
             }
             *{
                 box-sizing: border-box;
@@ -271,6 +347,51 @@ foreach ($byCategory as $row) {
                 margin-top: 6px;
                 font-size: 14px;
                 color: #555;
+            }
+            [data-theme="dark"] .action a {
+                color: var(--ink) !important;
+            }
+            [data-theme="dark"] .action a:hover {
+                color: var(--green) !important;
+            }
+            [data-theme="dark"] .action a span {
+                color: var(--muted) !important;
+            }
+            [data-theme="dark"] .read li a {
+                color: var(--ink) !important;
+            }
+            [data-theme="dark"] .read li a:hover {
+                color: var(--green) !important;
+            }
+            [data-theme="dark"] .read li em {
+                color: var(--muted) !important;
+            }
+            [data-theme="dark"] .bar-row span,
+            [data-theme="dark"] .bar-row b {
+                color: var(--ink) !important;
+            }
+            [data-theme="dark"] .row h3 a {
+                color: var(--ink) !important;
+            }
+            [data-theme="dark"] .row h3 a:hover {
+                color: var(--green) !important;
+            }
+            [data-theme="dark"] .row small {
+                color: var(--muted) !important;
+            }
+            [data-theme="dark"] .card-head a {
+                color: var(--green) !important;
+            }
+            [data-theme="dark"] .stat .label,
+            [data-theme="dark"] .stat .note,
+            [data-theme="dark"] .empty {
+                color: var(--muted) !important;
+            }
+            [data-theme="dark"] .stat a {
+                color: var(--green) !important;
+            }
+            [data-theme="dark"] .rank {
+                color: var(--green) !important;
             }
             .user a{
                 margin-left: 12px;
