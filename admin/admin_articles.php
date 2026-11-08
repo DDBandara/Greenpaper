@@ -1,9 +1,6 @@
 <?php
 session_start();
 
-if (!defined('BASE_URL')) {
-    define('BASE_URL', '/newsdesk1.0');
-}
 
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/admin.php';

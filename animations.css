@@ -23,9 +23,9 @@
     to { transform: rotate(360deg); }
 }
 
-body {
+/* body {
     animation: pageIn 0.5s ease both;
-}
+} */
 
 .logo {
     display: inline-block;

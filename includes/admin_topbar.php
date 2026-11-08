@@ -1,7 +1,4 @@
 <?php
-if (!defined('BASE_URL')) {
-    define('BASE_URL', '/newsdesk1.0');
-}
 
 $activeAdminPage = $activeAdminPage ?? '';
 

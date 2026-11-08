@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config.php';
 http_response_code(404);
 ?>
 
@@ -153,12 +154,12 @@ http_response_code(404);
             
             <div class="help-text">Here are some helpful links instead:</div>
             <div class="btn-group">
-                <a href="index.php" class="btn">Return Home</a>
+                <a href="<?= BASE_URL ?>/index.php" class="btn">Return Home</a>
             </div>
         </div>
 
         <div class="visual-section">
-            <img src="uploads/image5.jpg" alt="404 Error Graphic" class="error-image">
+            <img src="<?= BASE_URL ?>/uploads/image5.jpg" alt="404 Error Graphic" class="error-image">
         </div>
     </div>
 

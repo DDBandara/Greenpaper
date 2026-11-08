@@ -2,9 +2,6 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!defined('BASE_URL')) {
-    define('BASE_URL', '/newsdesk1.0');
-}
 if (!function_exists('safe')) {
     function safe($text) {
         return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
@@ -75,7 +72,7 @@ try {
       <a class="menu-logo" href="<?= BASE_URL ?>/index.php">Green Paper</a>
       <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="menuLinks">Menu</button>
       <div class="menu-links" id="menuLinks">
-      <a href="/index.php"<?= active($page === 'index.php') ?>>Latest</a>
+      <a href="<?= BASE_URL ?>/index.php"<?= active($page === 'index.php') ?>>Latest</a>
       <a href="<?= BASE_URL ?>/category.php?name=Academic"<?= active($cat === 'Academic') ?>>Academic</a>
       <a href="<?= BASE_URL ?>/category.php?name=Events"<?= active($cat === 'Events') ?>>Events</a>
       <a href="<?= BASE_URL ?>/category.php?name=Sports"<?= active($cat === 'Sports') ?>>Sports</a>

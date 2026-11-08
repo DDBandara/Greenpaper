@@ -1,7 +1,4 @@
 <?php
-if (!defined('BASE_URL')) {
-    define('BASE_URL', '/newsdesk1.0');
-}
 
 if (!function_exists('safe')) {
     function safe($text) {

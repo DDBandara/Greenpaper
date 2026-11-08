@@ -4,7 +4,7 @@ require_once __DIR__ . '/includes/functions.php';
 $pageTitle = 'Green Paper - Home';
 require_once __DIR__ . '/includes/header.php';
 
-$shuffle = true;
+$shuffle = false;
 
 $sql = "SELECT a.id, a.title, a.summary, a.image, a.published_at, a.is_featured,
                c.name AS category, u.name AS author

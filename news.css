@@ -163,9 +163,6 @@ i{ font-style:normal; }
   width:100%;
   background:var(--ph);
   border:1px solid #d3ccbe;
-  background-image:
-    linear-gradient(to top right,   transparent calc(50% - .5px), #cfc8ba calc(50% - .5px), #cfc8ba calc(50% + .5px), transparent calc(50% + .5px)),
-    linear-gradient(to bottom right, transparent calc(50% - .5px), #cfc8ba calc(50% - .5px), #cfc8ba calc(50% + .5px), transparent calc(50% + .5px));
 }
 .pic span{
   position:absolute;
